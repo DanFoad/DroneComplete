@@ -21944,7 +21944,7 @@ exports = module.exports = __webpack_require__(87)();
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 100;\n  src: local(\"Roboto Thin\"), local(\"Roboto-Thin\"), url(\"/src/style/font/Roboto/Roboto-Thin.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Light\"), local(\"Roboto-Light\"), url(\"/src/style/font/Roboto/Roboto-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto\"), local(\"Roboto-Regular\"), url(\"/src/style/font/Roboto/Roboto-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 500;\n  src: local(\"Roboto Medium\"), local(\"Roboto-Medium\"), url(\"/src/style/font/Roboto/Roboto-Medium.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 700;\n  src: local(\"Roboto Bold\"), local(\"Roboto-Bold\"), url(\"/src/style/font/Roboto/Roboto/Roboto-Bold.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Condensed Light\"), local(\"RobotoCondensed-Light\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto Condensed\"), local(\"RobotoCondensed-Regular\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box; }\n  *:before, *:after {\n    box-sizing: inherit; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-family: Roboto, sans-serif; }\n\n#app {\n  height: 100%;\n  width: 100%;\n  font-size: 62.5%; }\n\n.main {\n  height: 100%;\n  width: 100%;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.contents {\n  display: flex;\n  flex: 1;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.page {\n  flex: 1;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch;\n  justify-content: stretch; }\n\n.titlebar {\n  height: 30px;\n  background-color: #757575;\n  color: #f5f5f5;\n  display: flex;\n  flex-flow: row-reverse nowrap;\n  align-items: center;\n  -webkit-app-region: drag; }\n\n.titlebar__button {\n  height: 100%;\n  display: inline-flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center;\n  padding: 0 12px;\n  transition: 0.1s background-color;\n  cursor: pointer;\n  -webkit-app-region: no-drag;\n  user-select: none; }\n  .titlebar__button img {\n    display: inline-block;\n    height: 20px; }\n  .titlebar__button.minimize {\n    align-items: flex-end;\n    padding-bottom: 2px; }\n  .titlebar__button:hover {\n    background-color: rgba(0, 0, 0, 0.4); }\n  .titlebar__button.close:hover {\n    background-color: #e84e40; }\n\n.sidebar {\n  width: 360px;\n  background-color: #72d572;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch;\n  border-right: 1px solid #259b24; }\n\n.sidebar__title {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 100;\n  width: 100%;\n  padding: 16px 0;\n  text-align: center;\n  color: #0d5302;\n  font-size: 4em;\n  border-bottom: 1px solid #2baf2b; }\n\n.nav {\n  list-style: none;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.nav__item {\n  color: #FFFFFF;\n  cursor: pointer;\n  padding: 16px 0;\n  font-size: 1.6em;\n  text-transform: uppercase;\n  transition: 0.1s background-color; }\n  .nav__item i {\n    display: inline-block;\n    padding: 0 16px 0 24px; }\n  .nav__item.selected {\n    background-color: #42bd41;\n    border-bottom: 1px solid #2baf2b;\n    border-top: 1px solid #2baf2b;\n    border-right: 1px solid #42bd41;\n    width: calc(100% + 1px); }\n    .nav__item.selected:first-child {\n      border-top: 0; }\n  .nav__item:hover {\n    background-color: #42bd41; }\n\n.sidebar__footer {\n  margin-top: auto;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  height: 64px;\n  border-top: 1px solid #42bd41;\n  color: #FFFFFF; }\n\n.sidebar__settings {\n  width: 64px;\n  border-right: 1px solid #42bd41;\n  height: 100%;\n  text-align: center;\n  line-height: 64px;\n  font-size: 2.2em;\n  cursor: pointer;\n  transition: 0.1s background-color; }\n  .sidebar__settings:hover {\n    background-color: #42bd41; }\n\n.sidebar__credits {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 300;\n  font-size: 2em;\n  text-align: center;\n  flex: 1; }\n\n.flightplanner {\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.dimensions {\n  width: 272px;\n  background-color: #42bd41;\n  color: #FFFFFF; }\n\n.dimensions__title {\n  padding: 12px;\n  font-size: 1.8em;\n  font-weight: 400; }\n\n.planner {\n  flex: 1; }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 100;\n  src: local(\"Roboto Thin\"), local(\"Roboto-Thin\"), url(\"/src/style/font/Roboto/Roboto-Thin.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Light\"), local(\"Roboto-Light\"), url(\"/src/style/font/Roboto/Roboto-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto\"), local(\"Roboto-Regular\"), url(\"/src/style/font/Roboto/Roboto-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 500;\n  src: local(\"Roboto Medium\"), local(\"Roboto-Medium\"), url(\"/src/style/font/Roboto/Roboto-Medium.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 700;\n  src: local(\"Roboto Bold\"), local(\"Roboto-Bold\"), url(\"/src/style/font/Roboto/Roboto/Roboto-Bold.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Condensed Light\"), local(\"RobotoCondensed-Light\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto Condensed\"), local(\"RobotoCondensed-Regular\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box; }\n  *:before, *:after {\n    box-sizing: inherit; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-family: Roboto, sans-serif; }\n\n#app {\n  height: 100%;\n  width: 100%;\n  font-size: 62.5%; }\n\n.main {\n  height: 100%;\n  width: 100%;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.contents {\n  display: flex;\n  flex: 1;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.page {\n  flex: 1;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch;\n  justify-content: stretch; }\n\n.titlebar {\n  height: 30px;\n  background-color: #757575;\n  color: #f5f5f5;\n  display: flex;\n  flex-flow: row-reverse nowrap;\n  align-items: center;\n  -webkit-app-region: drag; }\n\n.titlebar__button {\n  height: 100%;\n  display: inline-flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center;\n  padding: 0 12px;\n  transition: 0.1s background-color;\n  cursor: pointer;\n  -webkit-app-region: no-drag;\n  user-select: none; }\n  .titlebar__button img {\n    display: inline-block;\n    height: 20px; }\n  .titlebar__button.minimize {\n    align-items: flex-end;\n    padding-bottom: 2px; }\n  .titlebar__button:hover {\n    background-color: rgba(0, 0, 0, 0.4); }\n  .titlebar__button.close:hover {\n    background-color: #e84e40; }\n\n.sidebar {\n  width: 360px;\n  background-color: #72d572;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch;\n  border-right: 1px solid #259b24; }\n\n.sidebar__title {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 100;\n  width: 100%;\n  padding: 16px 0;\n  text-align: center;\n  color: #0d5302;\n  font-size: 4em;\n  border-bottom: 1px solid #2baf2b; }\n\n.nav {\n  list-style: none;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.nav__item {\n  color: #FFFFFF;\n  cursor: pointer;\n  padding: 16px 0;\n  font-size: 1.6em;\n  text-transform: uppercase;\n  transition: 0.1s background-color; }\n  .nav__item i {\n    display: inline-block;\n    padding: 0 16px 0 24px; }\n  .nav__item.selected {\n    background-color: #42bd41;\n    border-bottom: 1px solid #2baf2b;\n    border-top: 1px solid #2baf2b;\n    border-right: 1px solid #42bd41;\n    width: calc(100% + 1px); }\n    .nav__item.selected:first-child {\n      border-top: 0; }\n  .nav__item:hover {\n    background-color: #42bd41; }\n\n.sidebar__footer {\n  margin-top: auto;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  height: 64px;\n  border-top: 1px solid #42bd41;\n  color: #FFFFFF; }\n\n.sidebar__settings {\n  width: 64px;\n  border-right: 1px solid #42bd41;\n  height: 100%;\n  text-align: center;\n  line-height: 64px;\n  font-size: 2.2em;\n  cursor: pointer;\n  transition: 0.1s background-color; }\n  .sidebar__settings:hover {\n    background-color: #42bd41; }\n\n.sidebar__credits {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 300;\n  font-size: 2em;\n  text-align: center;\n  flex: 1; }\n\n.flightplanner {\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.dimensions {\n  width: 272px;\n  background-color: #42bd41;\n  color: #FFFFFF; }\n\n.dimensions__title {\n  padding: 12px;\n  font-size: 1.8em;\n  font-weight: 400; }\n\n.dimensions__input {\n  margin: 8px 48px 32px 24px;\n  position: relative; }\n  .dimensions__input h3 {\n    text-transform: uppercase;\n    margin-bottom: 4px; }\n  .dimensions__input input[type=number] {\n    -webkit-appearance: none;\n    border: 1px solid #757575;\n    background-color: #72d572;\n    width: 100%;\n    height: 48px;\n    text-align: center;\n    padding-right: 16px;\n    font-size: 1.6em;\n    font-family: 'Roboto Condensed';\n    font-weight: 500;\n    display: inline-block;\n    outline: none; }\n    .dimensions__input input[type=number]:focus {\n      outline: none; }\n  .dimensions__input input[type=number]::-webkit-inner-spin-button,\n  .dimensions__input input[type=number]::-webkit-outer-spin-button {\n    -webkit-appearance: none;\n    margin: 0; }\n  .dimensions__input .dimensions__stepper {\n    position: absolute;\n    right: 0;\n    height: 24px;\n    width: 24px;\n    border: 1px solid #757575;\n    background-color: #bdbdbd;\n    color: #424242;\n    text-align: center;\n    line-height: 24px;\n    cursor: pointer; }\n    .dimensions__input .dimensions__stepper.dimensions__stepper--up {\n      bottom: 24px;\n      border-bottom: 0; }\n    .dimensions__input .dimensions__stepper.dimensions__stepper--down {\n      bottom: 0; }\n\n.dimensions__switch {\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center; }\n  .dimensions__switch .switch__label {\n    font-size: 1.4em;\n    flex: 1; }\n    .dimensions__switch .switch__label:first-child {\n      text-align: right; }\n\n.switch {\n  position: relative;\n  display: inline-block;\n  width: 72px;\n  height: 28px;\n  margin: 0 16px; }\n  .switch.checked .switch__slider:before {\n    right: 2px;\n    left: auto; }\n  .switch .switch__slider {\n    position: absolute;\n    cursor: pointer;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    border-radius: 16px;\n    background-color: #9e9e9e; }\n    .switch .switch__slider:before {\n      position: absolute;\n      content: '';\n      height: 24px;\n      width: 24px;\n      top: 2px;\n      left: 2px;\n      bottom: 2px;\n      border-radius: 50%;\n      background-color: #424242; }\n\n.planner {\n  flex: 1; }\n", ""]);
 
 // exports
 
@@ -22416,6 +22416,44 @@ class Sidebar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
 
 class FlightPlanner extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            width: 50,
+            maxWidth: 1000,
+            height: 50,
+            maxHeight: 1000,
+            unit: 'metres'
+        };
+
+        this.toggleUnitSwitch = this.toggleUnitSwitch.bind(this);
+    }
+
+    setWidth(value) {
+        if (value <= this.state.maxWidth && value >= 0) this.setState({ width: value });
+    }
+
+    setHeight(value) {
+        if (value <= this.state.maxHeight && value >= 0) this.setState({ height: value });
+    }
+
+    getUnitSwitch() {
+        if (this.state.unit == 'metres') {
+            return 'switch checked';
+        } else {
+            return 'switch';
+        }
+    }
+
+    toggleUnitSwitch() {
+        if (this.state.unit == 'metres') {
+            this.setState({ unit: 'feet' });
+        } else {
+            this.setState({ unit: 'metres' });
+        }
+    }
+
     render() {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
@@ -22427,6 +22465,77 @@ class FlightPlanner extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                     'h2',
                     { className: 'dimensions__title' },
                     'Subject Dimensions'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'dimensions__input' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h3',
+                        null,
+                        'Width'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'number', value: this.state.width, min: '0', max: '1000', onChange: evt => {
+                            this.setWidth(evt.target.value);
+                        } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'dimensions__stepper dimensions__stepper--up', onClick: () => {
+                                this.setWidth(this.state.width + 1);
+                            } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-caret-up' })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'dimensions__stepper dimensions__stepper--down', onClick: () => {
+                                this.setWidth(this.state.width - 1);
+                            } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-caret-down' })
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'dimensions__input' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'h3',
+                        null,
+                        'Height'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { type: 'number', value: this.state.height, min: '0', max: '1000', onChange: evt => {
+                            this.setHeight(evt.target.value);
+                        } }),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'dimensions__stepper dimensions__stepper--up', onClick: () => {
+                                this.setHeight(this.state.height + 1);
+                            } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-caret-up' })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'dimensions__stepper dimensions__stepper--down', onClick: () => {
+                                this.setHeight(this.state.height - 1);
+                            } },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-caret-down' })
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'dimensions__switch' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        { className: 'switch__label' },
+                        'feet'
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: this.getUnitSwitch(), onClick: this.toggleUnitSwitch },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'switch__slider' })
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'span',
+                        { className: 'switch__label' },
+                        'metres'
+                    )
                 )
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'planner' })
