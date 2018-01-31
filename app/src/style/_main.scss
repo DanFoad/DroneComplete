@@ -1,0 +1,13 @@
+.main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+}
+.contents {
+    display: flex;
+    flex: 1;
+    flex-flow: row nowrap;
+    align-items: stretch;
+}

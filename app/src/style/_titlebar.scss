@@ -1,0 +1,39 @@
+.titlebar {
+    height: 30px;
+    background-color: $grey-600;
+    color: $grey-100;
+    display: flex;
+    flex-flow: row-reverse nowrap;
+    align-items: center;
+    -webkit-app-region: drag;
+}
+.titlebar__button {
+    height: 100%;
+    display: inline-flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    transition: 0.1s background-color;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+    user-select: none;
+
+    img {
+        display: inline-block;
+        height: 20px;
+    }
+
+    &.minimize {
+        align-items: flex-end;
+        padding-bottom: 2px;
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    &.close:hover {
+        background-color: $red-400;
+    }
+}

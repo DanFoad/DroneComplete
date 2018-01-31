@@ -1,0 +1,64 @@
+.sidebar {
+    width: 360px;
+    background-color: $green-200;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+}
+.sidebar__title {
+    font-family: 'Roboto Condensed';
+    font-weight: 100;
+    width: 100%;
+    padding: 16px 0;
+    text-align: center;
+    color: $green-900;
+    font-size: 4em;
+    border-bottom: 1px solid $green-400;
+}
+.nav {
+    list-style: none;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+}
+.nav__item {
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: 16px 0;
+    font-size: 1.6em;
+    text-transform: uppercase;
+    transition: 0.1s background-color;
+
+    & i {
+        display: inline-block;
+        padding: 0 16px 0 24px;
+    }
+
+    &.selected {
+        background-color: $green-300;
+    }
+
+    &:hover {
+        background-color: $green-300;
+    }
+}
+.sidebar__footer {
+    margin-top: auto;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    height: 64px;
+    border-top: 1px solid $green-300;
+    color: #FFFFFF;
+}
+.sidebar__settings {
+    width: 64px;
+    border-right: 1px solid $green-300;
+    height: 100%;
+    text-align: center;
+    line-height: 64px;
+    font-size: 2.2em;
+}
+.sidebar__credits {
+    font-family: 'Roboto Condensed';
+}
