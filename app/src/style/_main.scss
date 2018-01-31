@@ -11,3 +11,10 @@
     flex-flow: row nowrap;
     align-items: stretch;
 }
+.page {
+    flex: 1;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    justify-content: stretch;
+}

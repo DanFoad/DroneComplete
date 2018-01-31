@@ -1,0 +1,18 @@
+.flightplanner {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+}
+.dimensions {
+    width: 272px;
+    background-color: $green-300;
+    color: #FFFFFF;
+}
+.dimensions__title {
+    padding: 12px;
+    font-size: 1.8em;
+    font-weight: 400;
+}
+.planner {
+    flex: 1;
+}
