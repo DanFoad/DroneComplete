@@ -1,20 +1,30 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
+import {connect} from 'react-redux'
 
 import {} from './style/global.scss'
+
+import AppActions from './actions/AppActions'
 
 import Titlebar from './components/Titlebar.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import FlightPlanner from './components/FlightPlanner.jsx'
+import ModelGenerator from './components/ModelGenerator.jsx'
 
 
-export default class App extends Component {
+class App extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            page: 0
+            page: props.page,
         }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            page: nextProps.page,
+        })
     }
 
     getCurrentPage() {
@@ -23,6 +33,8 @@ export default class App extends Component {
         switch(page) {
             case 0:
                 return <FlightPlanner />
+            case 1:
+                return <ModelGenerator />
             default:
                 return <div></div>
         }
@@ -42,3 +54,9 @@ export default class App extends Component {
         )
     }
 }
+const mapStateToProps = state => {
+    return {
+        page: state.page,
+    }
+}
+export default connect(mapStateToProps)(App)

@@ -1,31 +1,42 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
+import {connect} from 'react-redux'
 
 import {} from '../style/global.scss'
 
-export default class FlightPlanner extends Component {
+import AppActions from '../actions/AppActions'
+
+class FlightPlanner extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            width: 50,
+            width: this.props.width,
             maxWidth: 1000,
-            height: 50,
+            height: this.props.height,
             maxHeight: 1000,
-            unit: 'metres',
+            unit: this.props.unit,
         }
 
         this.toggleUnitSwitch = this.toggleUnitSwitch.bind(this)
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            width: nextProps.width,
+            height: nextProps.height,
+            unit: nextProps.unit,
+        })
+    }
+
     setWidth(value) {
         if (value <= this.state.maxWidth && value >= 0)
-            this.setState({ width: value })
+            AppActions.setFlightPlannerWidth(value)
     }
 
     setHeight(value) {
         if (value <= this.state.maxHeight && value >= 0)
-            this.setState({ height: value })
+            AppActions.setFlightPlannerHeight(value)
     }
 
     
@@ -39,9 +50,9 @@ export default class FlightPlanner extends Component {
 
     toggleUnitSwitch() {
         if (this.state.unit == 'metres') {
-            this.setState({ unit: 'feet' })
+            AppActions.setFlightPlannerUnit('feet')
         } else {
-            this.setState({ unit: 'metres' })
+            AppActions.setFlightPlannerUnit('metres')
         }
     }
 
@@ -87,3 +98,11 @@ export default class FlightPlanner extends Component {
         )
     }
 }
+const mapStateToProps = state => {
+    return {
+        width: state.flightplanner.width,
+        height: state.flightplanner.height,
+        unit: state.flightplanner.unit,
+    }
+}
+export default connect(mapStateToProps)(FlightPlanner)

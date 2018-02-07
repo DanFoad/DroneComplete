@@ -20,7 +20,7 @@ module.exports = {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
                 options: {
-                    presets: ['react']
+                    presets: ['env', 'react', 'stage-2']
                 }
             },
             {
