@@ -45,7 +45,7 @@ class Sidebar extends Component {
                 { this.getNavItems() }
                 <div className='sidebar__footer'>
                     <div className='sidebar__settings'><i className='fa fa-gears' /></div>
-                    <h3 className='sidebar__credits'>&copy; Dan Foad 2018</h3>
+                    <h3 className='sidebar__credits'>Dan Foad BEng Project</h3>
                 </div>
             </div>
         )
