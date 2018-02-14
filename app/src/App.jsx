@@ -10,6 +10,7 @@ import Titlebar from './components/Titlebar.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import FlightPlanner from './components/FlightPlanner.jsx'
 import ModelGenerator from './components/ModelGenerator.jsx'
+import ModelViewer from './components/ModelViewer.jsx'
 
 
 class App extends Component {
@@ -35,6 +36,8 @@ class App extends Component {
                 return <FlightPlanner />
             case 1:
                 return <ModelGenerator />
+            case 2:
+                return <ModelViewer />
             default:
                 return <div></div>
         }
