@@ -1,0 +1,49 @@
+.modelgenerator {
+    flex: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+}
+.generator__status p {
+    font-weight: bold;
+    font-size: 1.8em;
+    padding: 16px 32px;
+}
+.generator__items {
+    flex: 1;
+    overflow-y: scroll;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+
+    .generator__item {
+        flex-basis: calc(20% - 64px);
+        overflow: hidden;
+        height: 128px;
+        margin: 32px;
+        position: relative;
+    }
+
+    .generator__filename {
+        position: absolute;
+        display: inline-block;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 24px;
+        line-height: 24px;
+        text-align: right;
+        padding-right: 16px;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .generator__progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 10px;
+        background-color: $grey-500;
+    }
+}
