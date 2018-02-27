@@ -1604,7 +1604,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(243);
+var content = __webpack_require__(244);
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -1618,7 +1618,7 @@ var options = {"hmr":true}
 options.transform = transform
 options.insertInto = undefined;
 
-var update = __webpack_require__(244)(content, options);
+var update = __webpack_require__(245)(content, options);
 
 if(content.locals) module.exports = content.locals;
 
@@ -11353,6 +11353,131 @@ var FlightPlanner = function (_Component) {
     }
 
     _createClass(FlightPlanner, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.canvas.width = this.canvas.clientWidth;
+            this.canvas.height = this.canvas.clientHeight;
+            this.ctx = this.canvas.getContext('2d');
+
+            var ctx = this.ctx;
+            var h = this.canvas.height;
+            var w = this.canvas.width;
+            var shift = 120;
+
+            // Cube
+            ctx.fillStyle = '#444444';
+            ctx.font = '256px FontAwesome';
+            ctx.textAlign = 'center';
+            ctx.fillText('', w / 2 + 8, h / 1.05 - shift);
+
+            ctx.strokeStyle = '#2E7D32';
+
+            // Upper ellipse
+            ctx.beginPath();
+            ctx.ellipse(w / 2, h / 3.2 - shift, w / 3, w / 14, 0, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+
+            // Middle ellipse
+            ctx.beginPath();
+            ctx.ellipse(w / 2, h / 2 - shift, w / 4, w / 15, 0, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+
+            // Lower ellipse
+            ctx.beginPath();
+            ctx.ellipse(w / 2, h / 1.5 - shift, w / 6, w / 20, 0, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+
+            // Parallelogram around middle ellipse
+            ctx.strokeStyle = '#1B5E20';
+            ctx.beginPath();
+            var poly = [w / 2 - w / 4 - 38, h / 2 + w / 15 - shift, w / 2 - w / 4 + 36, h / 2 - w / 15 - shift, w / 2 + w / 4 + 38, h / 2 - w / 15 - shift, w / 2 + w / 4 - 36, h / 2 + w / 15 - shift];
+            ctx.moveTo(poly[0], poly[1]);
+            for (var i = 0; i < poly.length; i += 2) {
+                ctx.lineTo(poly[i], poly[i + 1]);
+            }ctx.lineTo(poly[0], poly[1]);
+            ctx.stroke();
+            ctx.closePath();
+
+            // Arrows
+
+            // Set 1: Nadir
+            ctx.beginPath();
+            ctx.fillStyle = '#1B5E20';
+            ctx.lineWidth = 6;
+            ctx.moveTo(poly[0] + 48, poly[1]);
+            ctx.lineTo(poly[0] + 48, poly[1] + 64);
+            ctx.stroke();
+            ctx.moveTo(poly[0] + 40, poly[1] + 64);
+            ctx.lineTo(poly[0] + 56, poly[1] + 64);
+            ctx.lineTo(poly[0] + 48, poly[1] + 76);
+            ctx.fill();
+            ctx.closePath();
+
+            // Set 2: Oblique
+            ctx.beginPath();
+            ctx.strokeStyle = '#2E7D32';
+            ctx.fillStyle = '#2E7D32';
+            ctx.moveTo(w / 2 + w / 4, h / 2 - shift);
+            ctx.lineTo(w / 2 + w / 4 - 64, h / 2 - shift + 64);
+            ctx.stroke();
+            ctx.moveTo(w / 2 + w / 4 - 56, h / 2 - shift + 65);
+            ctx.lineTo(w / 2 + w / 4 - 68, h / 2 - shift + 59);
+            ctx.lineTo(w / 2 + w / 4 - 70, h / 2 - shift + 72);
+            ctx.fill();
+            ctx.closePath();
+
+            // Set 3: Oblique
+            ctx.beginPath();
+            ctx.moveTo(w / 2 + w / 6, h / 1.5 - shift);
+            ctx.lineTo(w / 2 + w / 6 - 84, h / 1.5 - shift + 44);
+            ctx.stroke();
+            ctx.moveTo(w / 2 + w / 6 - 78, h / 1.5 - shift + 50);
+            ctx.lineTo(w / 2 + w / 6 - 88, h / 1.5 - shift + 39);
+            ctx.lineTo(w / 2 + w / 6 - 96, h / 1.5 - shift + 52);
+            ctx.fill();
+            ctx.closePath();
+
+            // Set 4: Oblique
+            ctx.beginPath();
+            ctx.moveTo(w / 2 + w / 3, h / 3.2 - shift);
+            ctx.lineTo(w / 2 + w / 3 - 44, h / 3.2 - shift + 84);
+            ctx.stroke();
+            ctx.moveTo(w / 2 + w / 3 - 36, h / 3.2 - shift + 85);
+            ctx.lineTo(w / 2 + w / 3 - 50, h / 3.2 - shift + 81);
+            ctx.lineTo(w / 2 + w / 3 - 48, h / 3.2 - shift + 92);
+            ctx.fill();
+            ctx.closePath();
+
+            // Text Titles
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 16px Roboto';
+            ctx.textAlign = 'center';
+            ctx.fillText('Set 1: Nadir', poly[0] + 48, poly[1] + shift);
+            ctx.textAlign = 'left';
+            ctx.fillText('Set 2: Oblique', w / 2 + w / 4 + 16, h / 2 + 16 - shift);
+            ctx.fillText('Set 3: Oblique', w / 2 + w / 6 + 16, h / 1.5 + 16 - shift);
+            ctx.fillText('Set 4: Oblique', w / 2 + w / 3 + 16, h / 3.2 + 16 - shift);
+
+            // Dotted Lines
+            ctx.beginPath();
+            ctx.strokeStyle = '#888888';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 15]);
+            ctx.moveTo(w / 2 - w / 3, h / 3.2 - shift);
+            ctx.lineTo(w / 2 - 128, h / 1.05 - shift - 148);
+            ctx.stroke();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.moveTo(w / 2 + w / 3, h / 3.2 - shift);
+            ctx.lineTo(w / 2 + 128, h / 1.05 - shift - 148);
+            ctx.stroke();
+            ctx.closePath();
+        }
+    }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
             this.setState({
@@ -11477,7 +11602,13 @@ var FlightPlanner = function (_Component) {
                         )
                     )
                 ),
-                _react2.default.createElement('div', { className: 'planner' })
+                _react2.default.createElement(
+                    'div',
+                    { className: 'planner' },
+                    _react2.default.createElement('canvas', { ref: function ref(canvas) {
+                            _this2.canvas = canvas;
+                        }, id: 'planner__canvas' })
+                )
             );
         }
     }]);
@@ -11674,7 +11805,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(10);
 
-var _fs = __webpack_require__(245);
+var _fs = __webpack_require__(246);
 
 var _fs2 = _interopRequireDefault(_fs);
 
@@ -11787,11 +11918,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(10);
 
-var _three = __webpack_require__(241);
+var _three = __webpack_require__(242);
 
 var THREE = _interopRequireWildcard(_three);
 
-var _threeObjLoader = __webpack_require__(246);
+var _threeObjLoader = __webpack_require__(241);
 
 var _threeObjLoader2 = _interopRequireDefault(_threeObjLoader);
 
@@ -12490,7 +12621,7 @@ var flightplanner = {
 };
 
 exports.default = {
-    page: 2,
+    page: 0,
     flightplanner: flightplanner
 };
 
@@ -25948,7 +26079,7 @@ if (typeof self !== 'undefined') {
 
 var result = (0, _ponyfill2.default)(root);
 exports.default = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(242)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(243)(module)))
 
 /***/ }),
 /* 240 */
@@ -25981,6 +26112,677 @@ function symbolObservablePonyfill(root) {
 
 /***/ }),
 /* 241 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function defaultOnError(err) {
+  throw new Error(err);
+}
+
+module.exports = function (THREE) {
+
+  /**
+   * @author mrdoob / http://mrdoob.com/
+   */
+
+  THREE.OBJLoader = function (manager) {
+
+    this.manager = manager !== undefined ? manager : THREE.DefaultLoadingManager;
+
+    this.materials = null;
+
+    this.regexp = {
+      // v float float float
+      vertex_pattern: /^v\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
+      // vn float float float
+      normal_pattern: /^vn\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
+      // vt float float
+      uv_pattern: /^vt\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
+      // f vertex vertex vertex
+      face_vertex: /^f\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)(?:\s+(-?\d+))?/,
+      // f vertex/uv vertex/uv vertex/uv
+      face_vertex_uv: /^f\s+(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)(?:\s+(-?\d+)\/(-?\d+))?/,
+      // f vertex/uv/normal vertex/uv/normal vertex/uv/normal
+      face_vertex_uv_normal: /^f\s+(-?\d+)\/(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)\/(-?\d+)(?:\s+(-?\d+)\/(-?\d+)\/(-?\d+))?/,
+      // f vertex//normal vertex//normal vertex//normal
+      face_vertex_normal: /^f\s+(-?\d+)\/\/(-?\d+)\s+(-?\d+)\/\/(-?\d+)\s+(-?\d+)\/\/(-?\d+)(?:\s+(-?\d+)\/\/(-?\d+))?/,
+      // o object_name | g group_name
+      object_pattern: /^[og]\s*(.+)?/,
+      // s boolean
+      smoothing_pattern: /^s\s+(\d+|on|off)/,
+      // mtllib file_reference
+      material_library_pattern: /^mtllib /,
+      // usemtl material_name
+      material_use_pattern: /^usemtl /
+    };
+  };
+
+  THREE.OBJLoader.prototype = {
+
+    constructor: THREE.OBJLoader,
+
+    load: function load(url, onLoad, onProgress, onError) {
+
+      var scope = this;
+      this.onError = onError || defaultOnError;
+
+      var loader = new THREE.FileLoader(scope.manager);
+      loader.setPath(this.path);
+      loader.load(url, function (text) {
+
+        onLoad(scope.parse(text));
+      }, onProgress, onError);
+    },
+
+    setPath: function setPath(value) {
+
+      this.path = value;
+    },
+
+    setMaterials: function setMaterials(materials) {
+
+      this.materials = materials;
+    },
+
+    _createParserState: function _createParserState() {
+
+      var state = {
+        objects: [],
+        object: {},
+
+        vertices: [],
+        normals: [],
+        uvs: [],
+
+        materialLibraries: [],
+
+        startObject: function startObject(name, fromDeclaration) {
+
+          // If the current object (initial from reset) is not from a g/o declaration in the parsed
+          // file. We need to use it for the first parsed g/o to keep things in sync.
+          if (this.object && this.object.fromDeclaration === false) {
+
+            this.object.name = name;
+            this.object.fromDeclaration = fromDeclaration !== false;
+            return;
+          }
+
+          var previousMaterial = this.object && typeof this.object.currentMaterial === 'function' ? this.object.currentMaterial() : undefined;
+
+          if (this.object && typeof this.object._finalize === 'function') {
+
+            this.object._finalize(true);
+          }
+
+          this.object = {
+            name: name || '',
+            fromDeclaration: fromDeclaration !== false,
+
+            geometry: {
+              vertices: [],
+              normals: [],
+              uvs: []
+            },
+            materials: [],
+            smooth: true,
+
+            startMaterial: function startMaterial(name, libraries) {
+
+              var previous = this._finalize(false);
+
+              // New usemtl declaration overwrites an inherited material, except if faces were declared
+              // after the material, then it must be preserved for proper MultiMaterial continuation.
+              if (previous && (previous.inherited || previous.groupCount <= 0)) {
+
+                this.materials.splice(previous.index, 1);
+              }
+
+              var material = {
+                index: this.materials.length,
+                name: name || '',
+                mtllib: Array.isArray(libraries) && libraries.length > 0 ? libraries[libraries.length - 1] : '',
+                smooth: previous !== undefined ? previous.smooth : this.smooth,
+                groupStart: previous !== undefined ? previous.groupEnd : 0,
+                groupEnd: -1,
+                groupCount: -1,
+                inherited: false,
+
+                clone: function clone(index) {
+                  var cloned = {
+                    index: typeof index === 'number' ? index : this.index,
+                    name: this.name,
+                    mtllib: this.mtllib,
+                    smooth: this.smooth,
+                    groupStart: 0,
+                    groupEnd: -1,
+                    groupCount: -1,
+                    inherited: false
+                  };
+                  cloned.clone = this.clone.bind(cloned);
+                  return cloned;
+                }
+              };
+
+              this.materials.push(material);
+
+              return material;
+            },
+
+            currentMaterial: function currentMaterial() {
+
+              if (this.materials.length > 0) {
+                return this.materials[this.materials.length - 1];
+              }
+
+              return undefined;
+            },
+
+            _finalize: function _finalize(end) {
+
+              var lastMultiMaterial = this.currentMaterial();
+              if (lastMultiMaterial && lastMultiMaterial.groupEnd === -1) {
+
+                lastMultiMaterial.groupEnd = this.geometry.vertices.length / 3;
+                lastMultiMaterial.groupCount = lastMultiMaterial.groupEnd - lastMultiMaterial.groupStart;
+                lastMultiMaterial.inherited = false;
+              }
+
+              // Ignore objects tail materials if no face declarations followed them before a new o/g started.
+              if (end && this.materials.length > 1) {
+
+                for (var mi = this.materials.length - 1; mi >= 0; mi--) {
+                  if (this.materials[mi].groupCount <= 0) {
+                    this.materials.splice(mi, 1);
+                  }
+                }
+              }
+
+              // Guarantee at least one empty material, this makes the creation later more straight forward.
+              if (end && this.materials.length === 0) {
+
+                this.materials.push({
+                  name: '',
+                  smooth: this.smooth
+                });
+              }
+
+              return lastMultiMaterial;
+            }
+          };
+
+          // Inherit previous objects material.
+          // Spec tells us that a declared material must be set to all objects until a new material is declared.
+          // If a usemtl declaration is encountered while this new object is being parsed, it will
+          // overwrite the inherited material. Exception being that there was already face declarations
+          // to the inherited material, then it will be preserved for proper MultiMaterial continuation.
+
+          if (previousMaterial && previousMaterial.name && typeof previousMaterial.clone === "function") {
+
+            var declared = previousMaterial.clone(0);
+            declared.inherited = true;
+            this.object.materials.push(declared);
+          }
+
+          this.objects.push(this.object);
+        },
+
+        finalize: function finalize() {
+
+          if (this.object && typeof this.object._finalize === 'function') {
+
+            this.object._finalize(true);
+          }
+        },
+
+        parseVertexIndex: function parseVertexIndex(value, len) {
+
+          var index = parseInt(value, 10);
+          return (index >= 0 ? index - 1 : index + len / 3) * 3;
+        },
+
+        parseNormalIndex: function parseNormalIndex(value, len) {
+
+          var index = parseInt(value, 10);
+          return (index >= 0 ? index - 1 : index + len / 3) * 3;
+        },
+
+        parseUVIndex: function parseUVIndex(value, len) {
+
+          var index = parseInt(value, 10);
+          return (index >= 0 ? index - 1 : index + len / 2) * 2;
+        },
+
+        addVertex: function addVertex(a, b, c) {
+
+          var src = this.vertices;
+          var dst = this.object.geometry.vertices;
+
+          dst.push(src[a + 0]);
+          dst.push(src[a + 1]);
+          dst.push(src[a + 2]);
+          dst.push(src[b + 0]);
+          dst.push(src[b + 1]);
+          dst.push(src[b + 2]);
+          dst.push(src[c + 0]);
+          dst.push(src[c + 1]);
+          dst.push(src[c + 2]);
+        },
+
+        addVertexLine: function addVertexLine(a) {
+
+          var src = this.vertices;
+          var dst = this.object.geometry.vertices;
+
+          dst.push(src[a + 0]);
+          dst.push(src[a + 1]);
+          dst.push(src[a + 2]);
+        },
+
+        addNormal: function addNormal(a, b, c) {
+
+          var src = this.normals;
+          var dst = this.object.geometry.normals;
+
+          dst.push(src[a + 0]);
+          dst.push(src[a + 1]);
+          dst.push(src[a + 2]);
+          dst.push(src[b + 0]);
+          dst.push(src[b + 1]);
+          dst.push(src[b + 2]);
+          dst.push(src[c + 0]);
+          dst.push(src[c + 1]);
+          dst.push(src[c + 2]);
+        },
+
+        addUV: function addUV(a, b, c) {
+
+          var src = this.uvs;
+          var dst = this.object.geometry.uvs;
+
+          dst.push(src[a + 0]);
+          dst.push(src[a + 1]);
+          dst.push(src[b + 0]);
+          dst.push(src[b + 1]);
+          dst.push(src[c + 0]);
+          dst.push(src[c + 1]);
+        },
+
+        addUVLine: function addUVLine(a) {
+
+          var src = this.uvs;
+          var dst = this.object.geometry.uvs;
+
+          dst.push(src[a + 0]);
+          dst.push(src[a + 1]);
+        },
+
+        addFace: function addFace(a, b, c, d, ua, ub, uc, ud, na, nb, nc, nd) {
+
+          var vLen = this.vertices.length;
+
+          var ia = this.parseVertexIndex(a, vLen);
+          var ib = this.parseVertexIndex(b, vLen);
+          var ic = this.parseVertexIndex(c, vLen);
+          var id;
+
+          if (d === undefined) {
+
+            this.addVertex(ia, ib, ic);
+          } else {
+
+            id = this.parseVertexIndex(d, vLen);
+
+            this.addVertex(ia, ib, id);
+            this.addVertex(ib, ic, id);
+          }
+
+          if (ua !== undefined) {
+
+            var uvLen = this.uvs.length;
+
+            ia = this.parseUVIndex(ua, uvLen);
+            ib = this.parseUVIndex(ub, uvLen);
+            ic = this.parseUVIndex(uc, uvLen);
+
+            if (d === undefined) {
+
+              this.addUV(ia, ib, ic);
+            } else {
+
+              id = this.parseUVIndex(ud, uvLen);
+
+              this.addUV(ia, ib, id);
+              this.addUV(ib, ic, id);
+            }
+          }
+
+          if (na !== undefined) {
+
+            // Normals are many times the same. If so, skip function call and parseInt.
+            var nLen = this.normals.length;
+            ia = this.parseNormalIndex(na, nLen);
+
+            ib = na === nb ? ia : this.parseNormalIndex(nb, nLen);
+            ic = na === nc ? ia : this.parseNormalIndex(nc, nLen);
+
+            if (d === undefined) {
+
+              this.addNormal(ia, ib, ic);
+            } else {
+
+              id = this.parseNormalIndex(nd, nLen);
+
+              this.addNormal(ia, ib, id);
+              this.addNormal(ib, ic, id);
+            }
+          }
+        },
+
+        addLineGeometry: function addLineGeometry(vertices, uvs) {
+
+          this.object.geometry.type = 'Line';
+
+          var vLen = this.vertices.length;
+          var uvLen = this.uvs.length;
+
+          for (var vi = 0, l = vertices.length; vi < l; vi++) {
+
+            this.addVertexLine(this.parseVertexIndex(vertices[vi], vLen));
+          }
+
+          for (var uvi = 0, l = uvs.length; uvi < l; uvi++) {
+
+            this.addUVLine(this.parseUVIndex(uvs[uvi], uvLen));
+          }
+        }
+
+      };
+
+      state.startObject('', false);
+
+      return state;
+    },
+
+    parse: function parse(text, debug) {
+      if (typeof debug === 'undefined') {
+        debug = true;
+      }
+
+      if (debug) {
+        console.time('OBJLoader');
+      }
+
+      var state = this._createParserState();
+
+      if (text.indexOf('\r\n') !== -1) {
+
+        // This is faster than String.split with regex that splits on both
+        text = text.replace(/\r\n/g, '\n');
+      }
+
+      if (text.indexOf('\\\n') !== -1) {
+
+        // join lines separated by a line continuation character (\)
+        text = text.replace(/\\\n/g, '');
+      }
+
+      var lines = text.split('\n');
+      var line = '',
+          lineFirstChar = '',
+          lineSecondChar = '';
+      var lineLength = 0;
+      var result = [];
+
+      // Faster to just trim left side of the line. Use if available.
+      var trimLeft = typeof ''.trimLeft === 'function';
+
+      for (var i = 0, l = lines.length; i < l; i++) {
+
+        line = lines[i];
+
+        line = trimLeft ? line.trimLeft() : line.trim();
+
+        lineLength = line.length;
+
+        if (lineLength === 0) continue;
+
+        lineFirstChar = line.charAt(0);
+
+        // @todo invoke passed in handler if any
+        if (lineFirstChar === '#') continue;
+
+        if (lineFirstChar === 'v') {
+
+          lineSecondChar = line.charAt(1);
+
+          if (lineSecondChar === ' ' && (result = this.regexp.vertex_pattern.exec(line)) !== null) {
+
+            // 0                  1      2      3
+            // ["v 1.0 2.0 3.0", "1.0", "2.0", "3.0"]
+
+            state.vertices.push(parseFloat(result[1]), parseFloat(result[2]), parseFloat(result[3]));
+          } else if (lineSecondChar === 'n' && (result = this.regexp.normal_pattern.exec(line)) !== null) {
+
+            // 0                   1      2      3
+            // ["vn 1.0 2.0 3.0", "1.0", "2.0", "3.0"]
+
+            state.normals.push(parseFloat(result[1]), parseFloat(result[2]), parseFloat(result[3]));
+          } else if (lineSecondChar === 't' && (result = this.regexp.uv_pattern.exec(line)) !== null) {
+
+            // 0               1      2
+            // ["vt 0.1 0.2", "0.1", "0.2"]
+
+            state.uvs.push(parseFloat(result[1]), parseFloat(result[2]));
+          } else {
+
+            this.onError("Unexpected vertex/normal/uv line: '" + line + "'");
+          }
+        } else if (lineFirstChar === "f") {
+
+          if ((result = this.regexp.face_vertex_uv_normal.exec(line)) !== null) {
+
+            // f vertex/uv/normal vertex/uv/normal vertex/uv/normal
+            // 0                        1    2    3    4    5    6    7    8    9   10         11         12
+            // ["f 1/1/1 2/2/2 3/3/3", "1", "1", "1", "2", "2", "2", "3", "3", "3", undefined, undefined, undefined]
+
+            state.addFace(result[1], result[4], result[7], result[10], result[2], result[5], result[8], result[11], result[3], result[6], result[9], result[12]);
+          } else if ((result = this.regexp.face_vertex_uv.exec(line)) !== null) {
+
+            // f vertex/uv vertex/uv vertex/uv
+            // 0                  1    2    3    4    5    6   7          8
+            // ["f 1/1 2/2 3/3", "1", "1", "2", "2", "3", "3", undefined, undefined]
+
+            state.addFace(result[1], result[3], result[5], result[7], result[2], result[4], result[6], result[8]);
+          } else if ((result = this.regexp.face_vertex_normal.exec(line)) !== null) {
+
+            // f vertex//normal vertex//normal vertex//normal
+            // 0                     1    2    3    4    5    6   7          8
+            // ["f 1//1 2//2 3//3", "1", "1", "2", "2", "3", "3", undefined, undefined]
+
+            state.addFace(result[1], result[3], result[5], result[7], undefined, undefined, undefined, undefined, result[2], result[4], result[6], result[8]);
+          } else if ((result = this.regexp.face_vertex.exec(line)) !== null) {
+
+            // f vertex vertex vertex
+            // 0            1    2    3   4
+            // ["f 1 2 3", "1", "2", "3", undefined]
+
+            state.addFace(result[1], result[2], result[3], result[4]);
+          } else {
+
+            this.onError("Unexpected face line: '" + line + "'");
+          }
+        } else if (lineFirstChar === "l") {
+
+          var lineParts = line.substring(1).trim().split(" ");
+          var lineVertices = [],
+              lineUVs = [];
+
+          if (line.indexOf("/") === -1) {
+
+            lineVertices = lineParts;
+          } else {
+
+            for (var li = 0, llen = lineParts.length; li < llen; li++) {
+
+              var parts = lineParts[li].split("/");
+
+              if (parts[0] !== "") lineVertices.push(parts[0]);
+              if (parts[1] !== "") lineUVs.push(parts[1]);
+            }
+          }
+          state.addLineGeometry(lineVertices, lineUVs);
+        } else if ((result = this.regexp.object_pattern.exec(line)) !== null) {
+
+          // o object_name
+          // or
+          // g group_name
+
+          // WORKAROUND: https://bugs.chromium.org/p/v8/issues/detail?id=2869
+          // var name = result[ 0 ].substr( 1 ).trim();
+          var name = (" " + result[0].substr(1).trim()).substr(1);
+
+          state.startObject(name);
+        } else if (this.regexp.material_use_pattern.test(line)) {
+
+          // material
+
+          state.object.startMaterial(line.substring(7).trim(), state.materialLibraries);
+        } else if (this.regexp.material_library_pattern.test(line)) {
+
+          // mtl file
+
+          state.materialLibraries.push(line.substring(7).trim());
+        } else if ((result = this.regexp.smoothing_pattern.exec(line)) !== null) {
+
+          // smooth shading
+
+          // @todo Handle files that have varying smooth values for a set of faces inside one geometry,
+          // but does not define a usemtl for each face set.
+          // This should be detected and a dummy material created (later MultiMaterial and geometry groups).
+          // This requires some care to not create extra material on each smooth value for "normal" obj files.
+          // where explicit usemtl defines geometry groups.
+          // Example asset: examples/models/obj/cerberus/Cerberus.obj
+
+          var value = result[1].trim().toLowerCase();
+          state.object.smooth = value === '1' || value === 'on';
+
+          var material = state.object.currentMaterial();
+          if (material) {
+
+            material.smooth = state.object.smooth;
+          }
+        } else {
+
+          // Handle null terminated files without exception
+          if (line === '\0') continue;
+
+          this.onError("Unexpected line: '" + line + "'");
+        }
+      }
+
+      state.finalize();
+
+      var container = new THREE.Group();
+      container.materialLibraries = [].concat(state.materialLibraries);
+
+      for (var i = 0, l = state.objects.length; i < l; i++) {
+
+        var object = state.objects[i];
+        var geometry = object.geometry;
+        var materials = object.materials;
+        var isLine = geometry.type === 'Line';
+
+        // Skip o/g line declarations that did not follow with any faces
+        if (geometry.vertices.length === 0) continue;
+
+        var buffergeometry = new THREE.BufferGeometry();
+
+        buffergeometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(geometry.vertices), 3));
+
+        if (geometry.normals.length > 0) {
+
+          buffergeometry.addAttribute('normal', new THREE.BufferAttribute(new Float32Array(geometry.normals), 3));
+        } else {
+
+          buffergeometry.computeVertexNormals();
+        }
+
+        if (geometry.uvs.length > 0) {
+
+          buffergeometry.addAttribute('uv', new THREE.BufferAttribute(new Float32Array(geometry.uvs), 2));
+        }
+
+        // Create materials
+
+        var createdMaterials = [];
+
+        for (var mi = 0, miLen = materials.length; mi < miLen; mi++) {
+
+          var sourceMaterial = materials[mi];
+          var material = undefined;
+
+          if (this.materials !== null) {
+
+            material = this.materials.create(sourceMaterial.name);
+
+            // mtl etc. loaders probably can't create line materials correctly, copy properties to a line material.
+            if (isLine && material && !(material instanceof THREE.LineBasicMaterial)) {
+
+              var materialLine = new THREE.LineBasicMaterial();
+              materialLine.copy(material);
+              material = materialLine;
+            }
+          }
+
+          if (!material) {
+
+            material = !isLine ? new THREE.MeshPhongMaterial() : new THREE.LineBasicMaterial();
+            material.name = sourceMaterial.name;
+          }
+
+          material.shading = sourceMaterial.smooth ? THREE.SmoothShading : THREE.FlatShading;
+
+          createdMaterials.push(material);
+        }
+
+        // Create mesh
+
+        var mesh;
+
+        if (createdMaterials.length > 1) {
+
+          for (var mi = 0, miLen = materials.length; mi < miLen; mi++) {
+
+            var sourceMaterial = materials[mi];
+            buffergeometry.addGroup(sourceMaterial.groupStart, sourceMaterial.groupCount, mi);
+          }
+
+          var multiMaterial = new THREE.MultiMaterial(createdMaterials);
+          mesh = !isLine ? new THREE.Mesh(buffergeometry, multiMaterial) : new THREE.LineSegments(buffergeometry, multiMaterial);
+        } else {
+
+          mesh = !isLine ? new THREE.Mesh(buffergeometry, createdMaterials[0]) : new THREE.LineSegments(buffergeometry, createdMaterials[0]);
+        }
+
+        mesh.name = object.name;
+
+        container.add(mesh);
+      }
+
+      if (debug) {
+        console.timeEnd('OBJLoader');
+      }
+
+      return container;
+    }
+
+  };
+};
+
+/***/ }),
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29075,7 +29877,7 @@ function Projector(){console.error('THREE.Projector has been moved to /examples/
 function CanvasRenderer(){console.error('THREE.CanvasRenderer has been moved to /examples/js/renderers/CanvasRenderer.js');this.domElement=document.createElementNS('http://www.w3.org/1999/xhtml','canvas');this.clear=function(){};this.render=function(){};this.setClearColor=function(){};this.setSize=function(){};}exports.WebGLRenderTargetCube=WebGLRenderTargetCube;exports.WebGLRenderTarget=WebGLRenderTarget;exports.WebGLRenderer=WebGLRenderer;exports.ShaderLib=ShaderLib;exports.UniformsLib=UniformsLib;exports.UniformsUtils=UniformsUtils;exports.ShaderChunk=ShaderChunk;exports.FogExp2=FogExp2;exports.Fog=Fog;exports.Scene=Scene;exports.LensFlare=LensFlare;exports.Sprite=Sprite;exports.LOD=LOD;exports.SkinnedMesh=SkinnedMesh;exports.Skeleton=Skeleton;exports.Bone=Bone;exports.Mesh=Mesh;exports.LineSegments=LineSegments;exports.LineLoop=LineLoop;exports.Line=Line;exports.Points=Points;exports.Group=Group;exports.VideoTexture=VideoTexture;exports.DataTexture=DataTexture;exports.CompressedTexture=CompressedTexture;exports.CubeTexture=CubeTexture;exports.CanvasTexture=CanvasTexture;exports.DepthTexture=DepthTexture;exports.Texture=Texture;exports.CompressedTextureLoader=CompressedTextureLoader;exports.DataTextureLoader=DataTextureLoader;exports.CubeTextureLoader=CubeTextureLoader;exports.TextureLoader=TextureLoader;exports.ObjectLoader=ObjectLoader;exports.MaterialLoader=MaterialLoader;exports.BufferGeometryLoader=BufferGeometryLoader;exports.DefaultLoadingManager=DefaultLoadingManager;exports.LoadingManager=LoadingManager;exports.JSONLoader=JSONLoader;exports.ImageLoader=ImageLoader;exports.ImageBitmapLoader=ImageBitmapLoader;exports.FontLoader=FontLoader;exports.FileLoader=FileLoader;exports.Loader=Loader;exports.LoaderUtils=LoaderUtils;exports.Cache=Cache;exports.AudioLoader=AudioLoader;exports.SpotLightShadow=SpotLightShadow;exports.SpotLight=SpotLight;exports.PointLight=PointLight;exports.RectAreaLight=RectAreaLight;exports.HemisphereLight=HemisphereLight;exports.DirectionalLightShadow=DirectionalLightShadow;exports.DirectionalLight=DirectionalLight;exports.AmbientLight=AmbientLight;exports.LightShadow=LightShadow;exports.Light=Light;exports.StereoCamera=StereoCamera;exports.PerspectiveCamera=PerspectiveCamera;exports.OrthographicCamera=OrthographicCamera;exports.CubeCamera=CubeCamera;exports.ArrayCamera=ArrayCamera;exports.Camera=Camera;exports.AudioListener=AudioListener;exports.PositionalAudio=PositionalAudio;exports.AudioContext=AudioContext;exports.AudioAnalyser=AudioAnalyser;exports.Audio=Audio;exports.VectorKeyframeTrack=VectorKeyframeTrack;exports.StringKeyframeTrack=StringKeyframeTrack;exports.QuaternionKeyframeTrack=QuaternionKeyframeTrack;exports.NumberKeyframeTrack=NumberKeyframeTrack;exports.ColorKeyframeTrack=ColorKeyframeTrack;exports.BooleanKeyframeTrack=BooleanKeyframeTrack;exports.PropertyMixer=PropertyMixer;exports.PropertyBinding=PropertyBinding;exports.KeyframeTrack=KeyframeTrack;exports.AnimationUtils=AnimationUtils;exports.AnimationObjectGroup=AnimationObjectGroup;exports.AnimationMixer=AnimationMixer;exports.AnimationClip=AnimationClip;exports.Uniform=Uniform;exports.InstancedBufferGeometry=InstancedBufferGeometry;exports.BufferGeometry=BufferGeometry;exports.Geometry=Geometry;exports.InterleavedBufferAttribute=InterleavedBufferAttribute;exports.InstancedInterleavedBuffer=InstancedInterleavedBuffer;exports.InterleavedBuffer=InterleavedBuffer;exports.InstancedBufferAttribute=InstancedBufferAttribute;exports.Face3=Face3;exports.Object3D=Object3D;exports.Raycaster=Raycaster;exports.Layers=Layers;exports.EventDispatcher=EventDispatcher;exports.Clock=Clock;exports.QuaternionLinearInterpolant=QuaternionLinearInterpolant;exports.LinearInterpolant=LinearInterpolant;exports.DiscreteInterpolant=DiscreteInterpolant;exports.CubicInterpolant=CubicInterpolant;exports.Interpolant=Interpolant;exports.Triangle=Triangle;exports.Math=_Math;exports.Spherical=Spherical;exports.Cylindrical=Cylindrical;exports.Plane=Plane;exports.Frustum=Frustum;exports.Sphere=Sphere;exports.Ray=Ray;exports.Matrix4=Matrix4;exports.Matrix3=Matrix3;exports.Box3=Box3;exports.Box2=Box2;exports.Line3=Line3;exports.Euler=Euler;exports.Vector4=Vector4;exports.Vector3=Vector3;exports.Vector2=Vector2;exports.Quaternion=Quaternion;exports.Color=Color;exports.ImmediateRenderObject=ImmediateRenderObject;exports.VertexNormalsHelper=VertexNormalsHelper;exports.SpotLightHelper=SpotLightHelper;exports.SkeletonHelper=SkeletonHelper;exports.PointLightHelper=PointLightHelper;exports.RectAreaLightHelper=RectAreaLightHelper;exports.HemisphereLightHelper=HemisphereLightHelper;exports.GridHelper=GridHelper;exports.PolarGridHelper=PolarGridHelper;exports.FaceNormalsHelper=FaceNormalsHelper;exports.DirectionalLightHelper=DirectionalLightHelper;exports.CameraHelper=CameraHelper;exports.BoxHelper=BoxHelper;exports.Box3Helper=Box3Helper;exports.PlaneHelper=PlaneHelper;exports.ArrowHelper=ArrowHelper;exports.AxesHelper=AxesHelper;exports.Shape=Shape;exports.Path=Path;exports.ShapePath=ShapePath;exports.Font=Font;exports.CurvePath=CurvePath;exports.Curve=Curve;exports.ShapeUtils=ShapeUtils;exports.SceneUtils=SceneUtils;exports.WebGLUtils=WebGLUtils;exports.WireframeGeometry=WireframeGeometry;exports.ParametricGeometry=ParametricGeometry;exports.ParametricBufferGeometry=ParametricBufferGeometry;exports.TetrahedronGeometry=TetrahedronGeometry;exports.TetrahedronBufferGeometry=TetrahedronBufferGeometry;exports.OctahedronGeometry=OctahedronGeometry;exports.OctahedronBufferGeometry=OctahedronBufferGeometry;exports.IcosahedronGeometry=IcosahedronGeometry;exports.IcosahedronBufferGeometry=IcosahedronBufferGeometry;exports.DodecahedronGeometry=DodecahedronGeometry;exports.DodecahedronBufferGeometry=DodecahedronBufferGeometry;exports.PolyhedronGeometry=PolyhedronGeometry;exports.PolyhedronBufferGeometry=PolyhedronBufferGeometry;exports.TubeGeometry=TubeGeometry;exports.TubeBufferGeometry=TubeBufferGeometry;exports.TorusKnotGeometry=TorusKnotGeometry;exports.TorusKnotBufferGeometry=TorusKnotBufferGeometry;exports.TorusGeometry=TorusGeometry;exports.TorusBufferGeometry=TorusBufferGeometry;exports.TextGeometry=TextGeometry;exports.TextBufferGeometry=TextBufferGeometry;exports.SphereGeometry=SphereGeometry;exports.SphereBufferGeometry=SphereBufferGeometry;exports.RingGeometry=RingGeometry;exports.RingBufferGeometry=RingBufferGeometry;exports.PlaneGeometry=PlaneGeometry;exports.PlaneBufferGeometry=PlaneBufferGeometry;exports.LatheGeometry=LatheGeometry;exports.LatheBufferGeometry=LatheBufferGeometry;exports.ShapeGeometry=ShapeGeometry;exports.ShapeBufferGeometry=ShapeBufferGeometry;exports.ExtrudeGeometry=ExtrudeGeometry;exports.ExtrudeBufferGeometry=ExtrudeBufferGeometry;exports.EdgesGeometry=EdgesGeometry;exports.ConeGeometry=ConeGeometry;exports.ConeBufferGeometry=ConeBufferGeometry;exports.CylinderGeometry=CylinderGeometry;exports.CylinderBufferGeometry=CylinderBufferGeometry;exports.CircleGeometry=CircleGeometry;exports.CircleBufferGeometry=CircleBufferGeometry;exports.BoxGeometry=BoxGeometry;exports.BoxBufferGeometry=BoxBufferGeometry;exports.ShadowMaterial=ShadowMaterial;exports.SpriteMaterial=SpriteMaterial;exports.RawShaderMaterial=RawShaderMaterial;exports.ShaderMaterial=ShaderMaterial;exports.PointsMaterial=PointsMaterial;exports.MeshPhysicalMaterial=MeshPhysicalMaterial;exports.MeshStandardMaterial=MeshStandardMaterial;exports.MeshPhongMaterial=MeshPhongMaterial;exports.MeshToonMaterial=MeshToonMaterial;exports.MeshNormalMaterial=MeshNormalMaterial;exports.MeshLambertMaterial=MeshLambertMaterial;exports.MeshDepthMaterial=MeshDepthMaterial;exports.MeshDistanceMaterial=MeshDistanceMaterial;exports.MeshBasicMaterial=MeshBasicMaterial;exports.LineDashedMaterial=LineDashedMaterial;exports.LineBasicMaterial=LineBasicMaterial;exports.Material=Material;exports.Float64BufferAttribute=Float64BufferAttribute;exports.Float32BufferAttribute=Float32BufferAttribute;exports.Uint32BufferAttribute=Uint32BufferAttribute;exports.Int32BufferAttribute=Int32BufferAttribute;exports.Uint16BufferAttribute=Uint16BufferAttribute;exports.Int16BufferAttribute=Int16BufferAttribute;exports.Uint8ClampedBufferAttribute=Uint8ClampedBufferAttribute;exports.Uint8BufferAttribute=Uint8BufferAttribute;exports.Int8BufferAttribute=Int8BufferAttribute;exports.BufferAttribute=BufferAttribute;exports.ArcCurve=ArcCurve;exports.CatmullRomCurve3=CatmullRomCurve3;exports.CubicBezierCurve=CubicBezierCurve;exports.CubicBezierCurve3=CubicBezierCurve3;exports.EllipseCurve=EllipseCurve;exports.LineCurve=LineCurve;exports.LineCurve3=LineCurve3;exports.QuadraticBezierCurve=QuadraticBezierCurve;exports.QuadraticBezierCurve3=QuadraticBezierCurve3;exports.SplineCurve=SplineCurve;exports.REVISION=REVISION;exports.MOUSE=MOUSE;exports.CullFaceNone=CullFaceNone;exports.CullFaceBack=CullFaceBack;exports.CullFaceFront=CullFaceFront;exports.CullFaceFrontBack=CullFaceFrontBack;exports.FrontFaceDirectionCW=FrontFaceDirectionCW;exports.FrontFaceDirectionCCW=FrontFaceDirectionCCW;exports.BasicShadowMap=BasicShadowMap;exports.PCFShadowMap=PCFShadowMap;exports.PCFSoftShadowMap=PCFSoftShadowMap;exports.FrontSide=FrontSide;exports.BackSide=BackSide;exports.DoubleSide=DoubleSide;exports.FlatShading=FlatShading;exports.SmoothShading=SmoothShading;exports.NoColors=NoColors;exports.FaceColors=FaceColors;exports.VertexColors=VertexColors;exports.NoBlending=NoBlending;exports.NormalBlending=NormalBlending;exports.AdditiveBlending=AdditiveBlending;exports.SubtractiveBlending=SubtractiveBlending;exports.MultiplyBlending=MultiplyBlending;exports.CustomBlending=CustomBlending;exports.AddEquation=AddEquation;exports.SubtractEquation=SubtractEquation;exports.ReverseSubtractEquation=ReverseSubtractEquation;exports.MinEquation=MinEquation;exports.MaxEquation=MaxEquation;exports.ZeroFactor=ZeroFactor;exports.OneFactor=OneFactor;exports.SrcColorFactor=SrcColorFactor;exports.OneMinusSrcColorFactor=OneMinusSrcColorFactor;exports.SrcAlphaFactor=SrcAlphaFactor;exports.OneMinusSrcAlphaFactor=OneMinusSrcAlphaFactor;exports.DstAlphaFactor=DstAlphaFactor;exports.OneMinusDstAlphaFactor=OneMinusDstAlphaFactor;exports.DstColorFactor=DstColorFactor;exports.OneMinusDstColorFactor=OneMinusDstColorFactor;exports.SrcAlphaSaturateFactor=SrcAlphaSaturateFactor;exports.NeverDepth=NeverDepth;exports.AlwaysDepth=AlwaysDepth;exports.LessDepth=LessDepth;exports.LessEqualDepth=LessEqualDepth;exports.EqualDepth=EqualDepth;exports.GreaterEqualDepth=GreaterEqualDepth;exports.GreaterDepth=GreaterDepth;exports.NotEqualDepth=NotEqualDepth;exports.MultiplyOperation=MultiplyOperation;exports.MixOperation=MixOperation;exports.AddOperation=AddOperation;exports.NoToneMapping=NoToneMapping;exports.LinearToneMapping=LinearToneMapping;exports.ReinhardToneMapping=ReinhardToneMapping;exports.Uncharted2ToneMapping=Uncharted2ToneMapping;exports.CineonToneMapping=CineonToneMapping;exports.UVMapping=UVMapping;exports.CubeReflectionMapping=CubeReflectionMapping;exports.CubeRefractionMapping=CubeRefractionMapping;exports.EquirectangularReflectionMapping=EquirectangularReflectionMapping;exports.EquirectangularRefractionMapping=EquirectangularRefractionMapping;exports.SphericalReflectionMapping=SphericalReflectionMapping;exports.CubeUVReflectionMapping=CubeUVReflectionMapping;exports.CubeUVRefractionMapping=CubeUVRefractionMapping;exports.RepeatWrapping=RepeatWrapping;exports.ClampToEdgeWrapping=ClampToEdgeWrapping;exports.MirroredRepeatWrapping=MirroredRepeatWrapping;exports.NearestFilter=NearestFilter;exports.NearestMipMapNearestFilter=NearestMipMapNearestFilter;exports.NearestMipMapLinearFilter=NearestMipMapLinearFilter;exports.LinearFilter=LinearFilter;exports.LinearMipMapNearestFilter=LinearMipMapNearestFilter;exports.LinearMipMapLinearFilter=LinearMipMapLinearFilter;exports.UnsignedByteType=UnsignedByteType;exports.ByteType=ByteType;exports.ShortType=ShortType;exports.UnsignedShortType=UnsignedShortType;exports.IntType=IntType;exports.UnsignedIntType=UnsignedIntType;exports.FloatType=FloatType;exports.HalfFloatType=HalfFloatType;exports.UnsignedShort4444Type=UnsignedShort4444Type;exports.UnsignedShort5551Type=UnsignedShort5551Type;exports.UnsignedShort565Type=UnsignedShort565Type;exports.UnsignedInt248Type=UnsignedInt248Type;exports.AlphaFormat=AlphaFormat;exports.RGBFormat=RGBFormat;exports.RGBAFormat=RGBAFormat;exports.LuminanceFormat=LuminanceFormat;exports.LuminanceAlphaFormat=LuminanceAlphaFormat;exports.RGBEFormat=RGBEFormat;exports.DepthFormat=DepthFormat;exports.DepthStencilFormat=DepthStencilFormat;exports.RGB_S3TC_DXT1_Format=RGB_S3TC_DXT1_Format;exports.RGBA_S3TC_DXT1_Format=RGBA_S3TC_DXT1_Format;exports.RGBA_S3TC_DXT3_Format=RGBA_S3TC_DXT3_Format;exports.RGBA_S3TC_DXT5_Format=RGBA_S3TC_DXT5_Format;exports.RGB_PVRTC_4BPPV1_Format=RGB_PVRTC_4BPPV1_Format;exports.RGB_PVRTC_2BPPV1_Format=RGB_PVRTC_2BPPV1_Format;exports.RGBA_PVRTC_4BPPV1_Format=RGBA_PVRTC_4BPPV1_Format;exports.RGBA_PVRTC_2BPPV1_Format=RGBA_PVRTC_2BPPV1_Format;exports.RGB_ETC1_Format=RGB_ETC1_Format;exports.LoopOnce=LoopOnce;exports.LoopRepeat=LoopRepeat;exports.LoopPingPong=LoopPingPong;exports.InterpolateDiscrete=InterpolateDiscrete;exports.InterpolateLinear=InterpolateLinear;exports.InterpolateSmooth=InterpolateSmooth;exports.ZeroCurvatureEnding=ZeroCurvatureEnding;exports.ZeroSlopeEnding=ZeroSlopeEnding;exports.WrapAroundEnding=WrapAroundEnding;exports.TrianglesDrawMode=TrianglesDrawMode;exports.TriangleStripDrawMode=TriangleStripDrawMode;exports.TriangleFanDrawMode=TriangleFanDrawMode;exports.LinearEncoding=LinearEncoding;exports.sRGBEncoding=sRGBEncoding;exports.GammaEncoding=GammaEncoding;exports.RGBEEncoding=RGBEEncoding;exports.LogLuvEncoding=LogLuvEncoding;exports.RGBM7Encoding=RGBM7Encoding;exports.RGBM16Encoding=RGBM16Encoding;exports.RGBDEncoding=RGBDEncoding;exports.BasicDepthPacking=BasicDepthPacking;exports.RGBADepthPacking=RGBADepthPacking;exports.CubeGeometry=BoxGeometry;exports.Face4=Face4;exports.LineStrip=LineStrip;exports.LinePieces=LinePieces;exports.MeshFaceMaterial=MeshFaceMaterial;exports.MultiMaterial=MultiMaterial;exports.PointCloud=PointCloud;exports.Particle=Particle;exports.ParticleSystem=ParticleSystem;exports.PointCloudMaterial=PointCloudMaterial;exports.ParticleBasicMaterial=ParticleBasicMaterial;exports.ParticleSystemMaterial=ParticleSystemMaterial;exports.Vertex=Vertex;exports.DynamicBufferAttribute=DynamicBufferAttribute;exports.Int8Attribute=Int8Attribute;exports.Uint8Attribute=Uint8Attribute;exports.Uint8ClampedAttribute=Uint8ClampedAttribute;exports.Int16Attribute=Int16Attribute;exports.Uint16Attribute=Uint16Attribute;exports.Int32Attribute=Int32Attribute;exports.Uint32Attribute=Uint32Attribute;exports.Float32Attribute=Float32Attribute;exports.Float64Attribute=Float64Attribute;exports.ClosedSplineCurve3=ClosedSplineCurve3;exports.SplineCurve3=SplineCurve3;exports.Spline=Spline;exports.AxisHelper=AxisHelper;exports.BoundingBoxHelper=BoundingBoxHelper;exports.EdgesHelper=EdgesHelper;exports.WireframeHelper=WireframeHelper;exports.XHRLoader=XHRLoader;exports.BinaryTextureLoader=BinaryTextureLoader;exports.GeometryUtils=GeometryUtils;exports.ImageUtils=ImageUtils;exports.Projector=Projector;exports.CanvasRenderer=CanvasRenderer;
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29105,7 +29907,7 @@ module.exports = function (module) {
 };
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(115)();
@@ -29113,13 +29915,13 @@ exports = module.exports = __webpack_require__(115)();
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 100;\n  src: local(\"Roboto Thin\"), local(\"Roboto-Thin\"), url(\"/src/style/font/Roboto/Roboto-Thin.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Light\"), local(\"Roboto-Light\"), url(\"/src/style/font/Roboto/Roboto-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto\"), local(\"Roboto-Regular\"), url(\"/src/style/font/Roboto/Roboto-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 500;\n  src: local(\"Roboto Medium\"), local(\"Roboto-Medium\"), url(\"/src/style/font/Roboto/Roboto-Medium.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 700;\n  src: local(\"Roboto Bold\"), local(\"Roboto-Bold\"), url(\"/src/style/font/Roboto/Roboto/Roboto-Bold.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Condensed Light\"), local(\"RobotoCondensed-Light\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto Condensed\"), local(\"RobotoCondensed-Regular\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box; }\n  *:before, *:after {\n    box-sizing: inherit; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-family: Roboto, sans-serif; }\n\n#app {\n  height: 100%;\n  width: 100%;\n  font-size: 62.5%; }\n\n.main {\n  height: 100%;\n  width: 100%;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.contents {\n  display: flex;\n  flex: 1;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.page {\n  flex: 1;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch;\n  justify-content: stretch; }\n\n.titlebar {\n  height: 30px;\n  background-color: #616161;\n  color: #f5f5f5;\n  display: flex;\n  flex-flow: row-reverse nowrap;\n  align-items: center;\n  -webkit-app-region: drag; }\n\n.titlebar__button {\n  height: 100%;\n  display: inline-flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center;\n  padding: 0 12px;\n  transition: 0.1s background-color;\n  cursor: pointer;\n  -webkit-app-region: no-drag;\n  user-select: none; }\n  .titlebar__button img {\n    display: inline-block;\n    height: 20px; }\n  .titlebar__button.minimize {\n    align-items: flex-end;\n    padding-bottom: 2px; }\n  .titlebar__button:hover {\n    background-color: rgba(0, 0, 0, 0.4); }\n  .titlebar__button.close:hover {\n    background-color: #e84e40; }\n\n.sidebar {\n  width: 360px;\n  background-color: #72d572;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch;\n  border-right: 1px solid #259b24; }\n\n.sidebar__title {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 100;\n  width: 100%;\n  padding: 16px 0;\n  text-align: center;\n  color: #0d5302;\n  font-size: 4em;\n  border-bottom: 1px solid #2baf2b; }\n\n.nav {\n  list-style: none;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.nav__item {\n  color: #FFFFFF;\n  cursor: pointer;\n  padding: 16px 0;\n  font-size: 1.6em;\n  text-transform: uppercase;\n  transition: 0.1s background-color;\n  border-top: 1px solid transparent;\n  border-bottom: 1px solid transparent; }\n  .nav__item i {\n    display: inline-block;\n    padding: 0 16px 0 24px; }\n  .nav__item.selected {\n    background-color: #42bd41;\n    border-bottom-color: #2baf2b;\n    border-top-color: #2baf2b;\n    border-right: 1px solid #42bd41;\n    width: calc(100% + 1px); }\n    .nav__item.selected:first-child {\n      border-top-color: transparent; }\n  .nav__item:hover {\n    background-color: #42bd41; }\n\n.sidebar__footer {\n  margin-top: auto;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  height: 64px;\n  border-top: 1px solid #42bd41;\n  color: #FFFFFF; }\n\n.sidebar__settings {\n  width: 64px;\n  border-right: 1px solid #42bd41;\n  height: 100%;\n  text-align: center;\n  line-height: 64px;\n  font-size: 2.2em;\n  cursor: pointer;\n  transition: 0.1s background-color; }\n  .sidebar__settings:hover {\n    background-color: #42bd41; }\n\n.sidebar__credits {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 300;\n  font-size: 2em;\n  text-align: center;\n  flex: 1; }\n\n.flightplanner {\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.dimensions {\n  width: 272px;\n  background-color: #42bd41;\n  color: #FFFFFF; }\n\n.dimensions__title {\n  padding: 12px;\n  font-size: 1.8em;\n  font-weight: 400; }\n\n.dimensions__input {\n  margin: 8px 48px 32px 24px;\n  position: relative; }\n  .dimensions__input h3 {\n    text-transform: uppercase;\n    margin-bottom: 4px; }\n  .dimensions__input input[type=number] {\n    -webkit-appearance: none;\n    border: 1px solid #757575;\n    background-color: #72d572;\n    width: 100%;\n    height: 48px;\n    text-align: center;\n    padding-right: 16px;\n    font-size: 1.6em;\n    font-family: 'Roboto Condensed';\n    font-weight: 500;\n    display: inline-block;\n    outline: none; }\n    .dimensions__input input[type=number]:focus {\n      outline: none; }\n  .dimensions__input input[type=number]::-webkit-inner-spin-button,\n  .dimensions__input input[type=number]::-webkit-outer-spin-button {\n    -webkit-appearance: none;\n    margin: 0; }\n  .dimensions__input .dimensions__stepper {\n    position: absolute;\n    right: 0;\n    height: 24px;\n    width: 24px;\n    border: 1px solid #757575;\n    background-color: #bdbdbd;\n    color: #424242;\n    text-align: center;\n    line-height: 24px;\n    cursor: pointer; }\n    .dimensions__input .dimensions__stepper.dimensions__stepper--up {\n      bottom: 24px;\n      border-bottom: 0; }\n    .dimensions__input .dimensions__stepper.dimensions__stepper--down {\n      bottom: 0; }\n\n.dimensions__switch {\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center; }\n  .dimensions__switch .switch__label {\n    font-size: 1.4em;\n    flex: 1; }\n    .dimensions__switch .switch__label:first-child {\n      text-align: right; }\n\n.switch {\n  position: relative;\n  display: inline-block;\n  width: 72px;\n  height: 28px;\n  margin: 0 16px; }\n  .switch.checked .switch__slider:before {\n    right: 2px;\n    left: auto; }\n  .switch .switch__slider {\n    position: absolute;\n    cursor: pointer;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    border-radius: 16px;\n    background-color: #9e9e9e; }\n    .switch .switch__slider:before {\n      position: absolute;\n      content: '';\n      height: 24px;\n      width: 24px;\n      top: 2px;\n      left: 2px;\n      bottom: 2px;\n      border-radius: 50%;\n      background-color: #424242; }\n\n.planner {\n  flex: 1; }\n\n.modelgenerator {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.generator__status p {\n  font-weight: bold;\n  font-size: 1.8em;\n  padding: 16px 32px; }\n\n.generator__items {\n  flex: 1;\n  overflow-y: scroll;\n  display: flex;\n  flex-flow: row wrap;\n  align-items: center;\n  justify-content: space-between; }\n  .generator__items .generator__item {\n    flex-basis: calc(20% - 64px);\n    overflow: hidden;\n    height: 128px;\n    margin: 32px;\n    position: relative; }\n  .generator__items .generator__filename {\n    position: absolute;\n    display: inline-block;\n    left: 0;\n    right: 0;\n    top: 0;\n    height: 24px;\n    line-height: 24px;\n    text-align: right;\n    padding-right: 16px;\n    background-color: rgba(255, 255, 255, 0.8); }\n  .generator__items .generator__progress {\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    height: 10px;\n    background-color: #9e9e9e; }\n\n.modelviewer {\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch;\n  flex: 1;\n  cursor: move; }\n\n.viewerbar {\n  background-color: #424242;\n  height: 48px;\n  padding-left: 12px; }\n\n.viewerbar__button {\n  -webkit-appearance: none;\n  border: 0;\n  background-color: transparent;\n  text-align: center;\n  height: 100%;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  padding: 0 12px;\n  cursor: pointer;\n  transition: 0.1s background-color; }\n  .viewerbar__button:hover {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .viewerbar__button:focus {\n    outline: none; }\n\n.viewercanvas {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n  .viewercanvas canvas {\n    flex: 1; }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 100;\n  src: local(\"Roboto Thin\"), local(\"Roboto-Thin\"), url(\"/src/style/font/Roboto/Roboto-Thin.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Light\"), local(\"Roboto-Light\"), url(\"/src/style/font/Roboto/Roboto-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto\"), local(\"Roboto-Regular\"), url(\"/src/style/font/Roboto/Roboto-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 500;\n  src: local(\"Roboto Medium\"), local(\"Roboto-Medium\"), url(\"/src/style/font/Roboto/Roboto-Medium.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 700;\n  src: local(\"Roboto Bold\"), local(\"Roboto-Bold\"), url(\"/src/style/font/Roboto/Roboto/Roboto-Bold.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Condensed Light\"), local(\"RobotoCondensed-Light\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto Condensed\"), local(\"RobotoCondensed-Regular\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box; }\n  *:before, *:after {\n    box-sizing: inherit; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-family: Roboto, sans-serif; }\n\n#app {\n  height: 100%;\n  width: 100%;\n  font-size: 62.5%; }\n\n.main {\n  height: 100%;\n  width: 100%;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.contents {\n  display: flex;\n  flex: 1;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.page {\n  flex: 1;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch;\n  justify-content: stretch; }\n\n.titlebar {\n  height: 30px;\n  background-color: #616161;\n  color: #f5f5f5;\n  display: flex;\n  flex-flow: row-reverse nowrap;\n  align-items: center;\n  -webkit-app-region: drag; }\n\n.titlebar__button {\n  height: 100%;\n  display: inline-flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center;\n  padding: 0 12px;\n  transition: 0.1s background-color;\n  cursor: pointer;\n  -webkit-app-region: no-drag;\n  user-select: none; }\n  .titlebar__button img {\n    display: inline-block;\n    height: 20px; }\n  .titlebar__button.minimize {\n    align-items: flex-end;\n    padding-bottom: 2px; }\n  .titlebar__button:hover {\n    background-color: rgba(0, 0, 0, 0.4); }\n  .titlebar__button.close:hover {\n    background-color: #e84e40; }\n\n.sidebar {\n  width: 360px;\n  background-color: #72d572;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch;\n  border-right: 1px solid #259b24; }\n\n.sidebar__title {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 100;\n  width: 100%;\n  padding: 16px 0;\n  text-align: center;\n  color: #0d5302;\n  font-size: 4em;\n  border-bottom: 1px solid #2baf2b; }\n\n.nav {\n  list-style: none;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.nav__item {\n  color: #FFFFFF;\n  cursor: pointer;\n  padding: 16px 0;\n  font-size: 1.6em;\n  text-transform: uppercase;\n  transition: 0.1s background-color;\n  border-top: 1px solid transparent;\n  border-bottom: 1px solid transparent; }\n  .nav__item i {\n    display: inline-block;\n    padding: 0 16px 0 24px; }\n  .nav__item.selected {\n    background-color: #42bd41;\n    border-bottom-color: #2baf2b;\n    border-top-color: #2baf2b;\n    border-right: 1px solid #42bd41;\n    width: calc(100% + 1px); }\n    .nav__item.selected:first-child {\n      border-top-color: transparent; }\n  .nav__item:hover {\n    background-color: #42bd41; }\n\n.sidebar__footer {\n  margin-top: auto;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  height: 64px;\n  border-top: 1px solid #42bd41;\n  color: #FFFFFF; }\n\n.sidebar__settings {\n  width: 64px;\n  border-right: 1px solid #42bd41;\n  height: 100%;\n  text-align: center;\n  line-height: 64px;\n  font-size: 2.2em;\n  cursor: pointer;\n  transition: 0.1s background-color; }\n  .sidebar__settings:hover {\n    background-color: #42bd41; }\n\n.sidebar__credits {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 300;\n  font-size: 2em;\n  text-align: center;\n  flex: 1; }\n\n.flightplanner {\n  flex: 1;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.dimensions {\n  width: 272px;\n  background-color: #42bd41;\n  color: #FFFFFF; }\n\n.dimensions__title {\n  padding: 12px;\n  font-size: 1.8em;\n  font-weight: 400; }\n\n.dimensions__input {\n  margin: 8px 48px 32px 24px;\n  position: relative; }\n  .dimensions__input h3 {\n    text-transform: uppercase;\n    margin-bottom: 4px; }\n  .dimensions__input input[type=number] {\n    -webkit-appearance: none;\n    border: 1px solid #757575;\n    background-color: #72d572;\n    width: 100%;\n    height: 48px;\n    text-align: center;\n    padding-right: 16px;\n    font-size: 1.6em;\n    font-family: 'Roboto Condensed';\n    font-weight: 500;\n    display: inline-block;\n    outline: none; }\n    .dimensions__input input[type=number]:focus {\n      outline: none; }\n  .dimensions__input input[type=number]::-webkit-inner-spin-button,\n  .dimensions__input input[type=number]::-webkit-outer-spin-button {\n    -webkit-appearance: none;\n    margin: 0; }\n  .dimensions__input .dimensions__stepper {\n    position: absolute;\n    right: 0;\n    height: 24px;\n    width: 24px;\n    border: 1px solid #757575;\n    background-color: #bdbdbd;\n    color: #424242;\n    text-align: center;\n    line-height: 24px;\n    cursor: pointer; }\n    .dimensions__input .dimensions__stepper.dimensions__stepper--up {\n      bottom: 24px;\n      border-bottom: 0; }\n    .dimensions__input .dimensions__stepper.dimensions__stepper--down {\n      bottom: 0; }\n\n.dimensions__switch {\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center; }\n  .dimensions__switch .switch__label {\n    font-size: 1.4em;\n    flex: 1; }\n    .dimensions__switch .switch__label:first-child {\n      text-align: right; }\n\n.switch {\n  position: relative;\n  display: inline-block;\n  width: 72px;\n  height: 28px;\n  margin: 0 16px; }\n  .switch.checked .switch__slider:before {\n    right: 2px;\n    left: auto; }\n  .switch .switch__slider {\n    position: absolute;\n    cursor: pointer;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    border-radius: 16px;\n    background-color: #bdbdbd; }\n    .switch .switch__slider:before {\n      position: absolute;\n      content: '';\n      height: 24px;\n      width: 24px;\n      top: 2px;\n      left: 2px;\n      bottom: 2px;\n      border-radius: 50%;\n      background-color: #424242; }\n\n.planner {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n  .planner canvas {\n    flex: 1; }\n\n.modelgenerator {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.generator__status p {\n  font-weight: bold;\n  font-size: 1.8em;\n  padding: 16px 32px; }\n\n.generator__items {\n  flex: 1;\n  overflow-y: scroll;\n  display: flex;\n  flex-flow: row wrap;\n  align-items: center;\n  justify-content: space-between; }\n  .generator__items .generator__item {\n    flex-basis: calc(20% - 64px);\n    overflow: hidden;\n    height: 128px;\n    margin: 32px;\n    position: relative; }\n  .generator__items .generator__filename {\n    position: absolute;\n    display: inline-block;\n    left: 0;\n    right: 0;\n    top: 0;\n    height: 24px;\n    line-height: 24px;\n    text-align: right;\n    padding-right: 16px;\n    background-color: rgba(255, 255, 255, 0.8); }\n  .generator__items .generator__progress {\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    height: 10px;\n    background-color: #9e9e9e; }\n\n.modelviewer {\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch;\n  flex: 1;\n  cursor: move; }\n\n.viewerbar {\n  background-color: #424242;\n  height: 48px;\n  padding-left: 12px; }\n\n.viewerbar__button {\n  -webkit-appearance: none;\n  border: 0;\n  background-color: transparent;\n  text-align: center;\n  height: 100%;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  padding: 0 12px;\n  cursor: pointer;\n  transition: 0.1s background-color; }\n  .viewerbar__button:hover {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .viewerbar__button:focus {\n    outline: none; }\n\n.viewercanvas {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n  .viewercanvas canvas {\n    flex: 1; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -29501,681 +30303,10 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
-
-/***/ }),
-/* 246 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-function defaultOnError(err) {
-  throw new Error(err);
-}
-
-module.exports = function (THREE) {
-
-  /**
-   * @author mrdoob / http://mrdoob.com/
-   */
-
-  THREE.OBJLoader = function (manager) {
-
-    this.manager = manager !== undefined ? manager : THREE.DefaultLoadingManager;
-
-    this.materials = null;
-
-    this.regexp = {
-      // v float float float
-      vertex_pattern: /^v\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
-      // vn float float float
-      normal_pattern: /^vn\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
-      // vt float float
-      uv_pattern: /^vt\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
-      // f vertex vertex vertex
-      face_vertex: /^f\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)(?:\s+(-?\d+))?/,
-      // f vertex/uv vertex/uv vertex/uv
-      face_vertex_uv: /^f\s+(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)(?:\s+(-?\d+)\/(-?\d+))?/,
-      // f vertex/uv/normal vertex/uv/normal vertex/uv/normal
-      face_vertex_uv_normal: /^f\s+(-?\d+)\/(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)\/(-?\d+)(?:\s+(-?\d+)\/(-?\d+)\/(-?\d+))?/,
-      // f vertex//normal vertex//normal vertex//normal
-      face_vertex_normal: /^f\s+(-?\d+)\/\/(-?\d+)\s+(-?\d+)\/\/(-?\d+)\s+(-?\d+)\/\/(-?\d+)(?:\s+(-?\d+)\/\/(-?\d+))?/,
-      // o object_name | g group_name
-      object_pattern: /^[og]\s*(.+)?/,
-      // s boolean
-      smoothing_pattern: /^s\s+(\d+|on|off)/,
-      // mtllib file_reference
-      material_library_pattern: /^mtllib /,
-      // usemtl material_name
-      material_use_pattern: /^usemtl /
-    };
-  };
-
-  THREE.OBJLoader.prototype = {
-
-    constructor: THREE.OBJLoader,
-
-    load: function load(url, onLoad, onProgress, onError) {
-
-      var scope = this;
-      this.onError = onError || defaultOnError;
-
-      var loader = new THREE.FileLoader(scope.manager);
-      loader.setPath(this.path);
-      loader.load(url, function (text) {
-
-        onLoad(scope.parse(text));
-      }, onProgress, onError);
-    },
-
-    setPath: function setPath(value) {
-
-      this.path = value;
-    },
-
-    setMaterials: function setMaterials(materials) {
-
-      this.materials = materials;
-    },
-
-    _createParserState: function _createParserState() {
-
-      var state = {
-        objects: [],
-        object: {},
-
-        vertices: [],
-        normals: [],
-        uvs: [],
-
-        materialLibraries: [],
-
-        startObject: function startObject(name, fromDeclaration) {
-
-          // If the current object (initial from reset) is not from a g/o declaration in the parsed
-          // file. We need to use it for the first parsed g/o to keep things in sync.
-          if (this.object && this.object.fromDeclaration === false) {
-
-            this.object.name = name;
-            this.object.fromDeclaration = fromDeclaration !== false;
-            return;
-          }
-
-          var previousMaterial = this.object && typeof this.object.currentMaterial === 'function' ? this.object.currentMaterial() : undefined;
-
-          if (this.object && typeof this.object._finalize === 'function') {
-
-            this.object._finalize(true);
-          }
-
-          this.object = {
-            name: name || '',
-            fromDeclaration: fromDeclaration !== false,
-
-            geometry: {
-              vertices: [],
-              normals: [],
-              uvs: []
-            },
-            materials: [],
-            smooth: true,
-
-            startMaterial: function startMaterial(name, libraries) {
-
-              var previous = this._finalize(false);
-
-              // New usemtl declaration overwrites an inherited material, except if faces were declared
-              // after the material, then it must be preserved for proper MultiMaterial continuation.
-              if (previous && (previous.inherited || previous.groupCount <= 0)) {
-
-                this.materials.splice(previous.index, 1);
-              }
-
-              var material = {
-                index: this.materials.length,
-                name: name || '',
-                mtllib: Array.isArray(libraries) && libraries.length > 0 ? libraries[libraries.length - 1] : '',
-                smooth: previous !== undefined ? previous.smooth : this.smooth,
-                groupStart: previous !== undefined ? previous.groupEnd : 0,
-                groupEnd: -1,
-                groupCount: -1,
-                inherited: false,
-
-                clone: function clone(index) {
-                  var cloned = {
-                    index: typeof index === 'number' ? index : this.index,
-                    name: this.name,
-                    mtllib: this.mtllib,
-                    smooth: this.smooth,
-                    groupStart: 0,
-                    groupEnd: -1,
-                    groupCount: -1,
-                    inherited: false
-                  };
-                  cloned.clone = this.clone.bind(cloned);
-                  return cloned;
-                }
-              };
-
-              this.materials.push(material);
-
-              return material;
-            },
-
-            currentMaterial: function currentMaterial() {
-
-              if (this.materials.length > 0) {
-                return this.materials[this.materials.length - 1];
-              }
-
-              return undefined;
-            },
-
-            _finalize: function _finalize(end) {
-
-              var lastMultiMaterial = this.currentMaterial();
-              if (lastMultiMaterial && lastMultiMaterial.groupEnd === -1) {
-
-                lastMultiMaterial.groupEnd = this.geometry.vertices.length / 3;
-                lastMultiMaterial.groupCount = lastMultiMaterial.groupEnd - lastMultiMaterial.groupStart;
-                lastMultiMaterial.inherited = false;
-              }
-
-              // Ignore objects tail materials if no face declarations followed them before a new o/g started.
-              if (end && this.materials.length > 1) {
-
-                for (var mi = this.materials.length - 1; mi >= 0; mi--) {
-                  if (this.materials[mi].groupCount <= 0) {
-                    this.materials.splice(mi, 1);
-                  }
-                }
-              }
-
-              // Guarantee at least one empty material, this makes the creation later more straight forward.
-              if (end && this.materials.length === 0) {
-
-                this.materials.push({
-                  name: '',
-                  smooth: this.smooth
-                });
-              }
-
-              return lastMultiMaterial;
-            }
-          };
-
-          // Inherit previous objects material.
-          // Spec tells us that a declared material must be set to all objects until a new material is declared.
-          // If a usemtl declaration is encountered while this new object is being parsed, it will
-          // overwrite the inherited material. Exception being that there was already face declarations
-          // to the inherited material, then it will be preserved for proper MultiMaterial continuation.
-
-          if (previousMaterial && previousMaterial.name && typeof previousMaterial.clone === "function") {
-
-            var declared = previousMaterial.clone(0);
-            declared.inherited = true;
-            this.object.materials.push(declared);
-          }
-
-          this.objects.push(this.object);
-        },
-
-        finalize: function finalize() {
-
-          if (this.object && typeof this.object._finalize === 'function') {
-
-            this.object._finalize(true);
-          }
-        },
-
-        parseVertexIndex: function parseVertexIndex(value, len) {
-
-          var index = parseInt(value, 10);
-          return (index >= 0 ? index - 1 : index + len / 3) * 3;
-        },
-
-        parseNormalIndex: function parseNormalIndex(value, len) {
-
-          var index = parseInt(value, 10);
-          return (index >= 0 ? index - 1 : index + len / 3) * 3;
-        },
-
-        parseUVIndex: function parseUVIndex(value, len) {
-
-          var index = parseInt(value, 10);
-          return (index >= 0 ? index - 1 : index + len / 2) * 2;
-        },
-
-        addVertex: function addVertex(a, b, c) {
-
-          var src = this.vertices;
-          var dst = this.object.geometry.vertices;
-
-          dst.push(src[a + 0]);
-          dst.push(src[a + 1]);
-          dst.push(src[a + 2]);
-          dst.push(src[b + 0]);
-          dst.push(src[b + 1]);
-          dst.push(src[b + 2]);
-          dst.push(src[c + 0]);
-          dst.push(src[c + 1]);
-          dst.push(src[c + 2]);
-        },
-
-        addVertexLine: function addVertexLine(a) {
-
-          var src = this.vertices;
-          var dst = this.object.geometry.vertices;
-
-          dst.push(src[a + 0]);
-          dst.push(src[a + 1]);
-          dst.push(src[a + 2]);
-        },
-
-        addNormal: function addNormal(a, b, c) {
-
-          var src = this.normals;
-          var dst = this.object.geometry.normals;
-
-          dst.push(src[a + 0]);
-          dst.push(src[a + 1]);
-          dst.push(src[a + 2]);
-          dst.push(src[b + 0]);
-          dst.push(src[b + 1]);
-          dst.push(src[b + 2]);
-          dst.push(src[c + 0]);
-          dst.push(src[c + 1]);
-          dst.push(src[c + 2]);
-        },
-
-        addUV: function addUV(a, b, c) {
-
-          var src = this.uvs;
-          var dst = this.object.geometry.uvs;
-
-          dst.push(src[a + 0]);
-          dst.push(src[a + 1]);
-          dst.push(src[b + 0]);
-          dst.push(src[b + 1]);
-          dst.push(src[c + 0]);
-          dst.push(src[c + 1]);
-        },
-
-        addUVLine: function addUVLine(a) {
-
-          var src = this.uvs;
-          var dst = this.object.geometry.uvs;
-
-          dst.push(src[a + 0]);
-          dst.push(src[a + 1]);
-        },
-
-        addFace: function addFace(a, b, c, d, ua, ub, uc, ud, na, nb, nc, nd) {
-
-          var vLen = this.vertices.length;
-
-          var ia = this.parseVertexIndex(a, vLen);
-          var ib = this.parseVertexIndex(b, vLen);
-          var ic = this.parseVertexIndex(c, vLen);
-          var id;
-
-          if (d === undefined) {
-
-            this.addVertex(ia, ib, ic);
-          } else {
-
-            id = this.parseVertexIndex(d, vLen);
-
-            this.addVertex(ia, ib, id);
-            this.addVertex(ib, ic, id);
-          }
-
-          if (ua !== undefined) {
-
-            var uvLen = this.uvs.length;
-
-            ia = this.parseUVIndex(ua, uvLen);
-            ib = this.parseUVIndex(ub, uvLen);
-            ic = this.parseUVIndex(uc, uvLen);
-
-            if (d === undefined) {
-
-              this.addUV(ia, ib, ic);
-            } else {
-
-              id = this.parseUVIndex(ud, uvLen);
-
-              this.addUV(ia, ib, id);
-              this.addUV(ib, ic, id);
-            }
-          }
-
-          if (na !== undefined) {
-
-            // Normals are many times the same. If so, skip function call and parseInt.
-            var nLen = this.normals.length;
-            ia = this.parseNormalIndex(na, nLen);
-
-            ib = na === nb ? ia : this.parseNormalIndex(nb, nLen);
-            ic = na === nc ? ia : this.parseNormalIndex(nc, nLen);
-
-            if (d === undefined) {
-
-              this.addNormal(ia, ib, ic);
-            } else {
-
-              id = this.parseNormalIndex(nd, nLen);
-
-              this.addNormal(ia, ib, id);
-              this.addNormal(ib, ic, id);
-            }
-          }
-        },
-
-        addLineGeometry: function addLineGeometry(vertices, uvs) {
-
-          this.object.geometry.type = 'Line';
-
-          var vLen = this.vertices.length;
-          var uvLen = this.uvs.length;
-
-          for (var vi = 0, l = vertices.length; vi < l; vi++) {
-
-            this.addVertexLine(this.parseVertexIndex(vertices[vi], vLen));
-          }
-
-          for (var uvi = 0, l = uvs.length; uvi < l; uvi++) {
-
-            this.addUVLine(this.parseUVIndex(uvs[uvi], uvLen));
-          }
-        }
-
-      };
-
-      state.startObject('', false);
-
-      return state;
-    },
-
-    parse: function parse(text, debug) {
-      if (typeof debug === 'undefined') {
-        debug = true;
-      }
-
-      if (debug) {
-        console.time('OBJLoader');
-      }
-
-      var state = this._createParserState();
-
-      if (text.indexOf('\r\n') !== -1) {
-
-        // This is faster than String.split with regex that splits on both
-        text = text.replace(/\r\n/g, '\n');
-      }
-
-      if (text.indexOf('\\\n') !== -1) {
-
-        // join lines separated by a line continuation character (\)
-        text = text.replace(/\\\n/g, '');
-      }
-
-      var lines = text.split('\n');
-      var line = '',
-          lineFirstChar = '',
-          lineSecondChar = '';
-      var lineLength = 0;
-      var result = [];
-
-      // Faster to just trim left side of the line. Use if available.
-      var trimLeft = typeof ''.trimLeft === 'function';
-
-      for (var i = 0, l = lines.length; i < l; i++) {
-
-        line = lines[i];
-
-        line = trimLeft ? line.trimLeft() : line.trim();
-
-        lineLength = line.length;
-
-        if (lineLength === 0) continue;
-
-        lineFirstChar = line.charAt(0);
-
-        // @todo invoke passed in handler if any
-        if (lineFirstChar === '#') continue;
-
-        if (lineFirstChar === 'v') {
-
-          lineSecondChar = line.charAt(1);
-
-          if (lineSecondChar === ' ' && (result = this.regexp.vertex_pattern.exec(line)) !== null) {
-
-            // 0                  1      2      3
-            // ["v 1.0 2.0 3.0", "1.0", "2.0", "3.0"]
-
-            state.vertices.push(parseFloat(result[1]), parseFloat(result[2]), parseFloat(result[3]));
-          } else if (lineSecondChar === 'n' && (result = this.regexp.normal_pattern.exec(line)) !== null) {
-
-            // 0                   1      2      3
-            // ["vn 1.0 2.0 3.0", "1.0", "2.0", "3.0"]
-
-            state.normals.push(parseFloat(result[1]), parseFloat(result[2]), parseFloat(result[3]));
-          } else if (lineSecondChar === 't' && (result = this.regexp.uv_pattern.exec(line)) !== null) {
-
-            // 0               1      2
-            // ["vt 0.1 0.2", "0.1", "0.2"]
-
-            state.uvs.push(parseFloat(result[1]), parseFloat(result[2]));
-          } else {
-
-            this.onError("Unexpected vertex/normal/uv line: '" + line + "'");
-          }
-        } else if (lineFirstChar === "f") {
-
-          if ((result = this.regexp.face_vertex_uv_normal.exec(line)) !== null) {
-
-            // f vertex/uv/normal vertex/uv/normal vertex/uv/normal
-            // 0                        1    2    3    4    5    6    7    8    9   10         11         12
-            // ["f 1/1/1 2/2/2 3/3/3", "1", "1", "1", "2", "2", "2", "3", "3", "3", undefined, undefined, undefined]
-
-            state.addFace(result[1], result[4], result[7], result[10], result[2], result[5], result[8], result[11], result[3], result[6], result[9], result[12]);
-          } else if ((result = this.regexp.face_vertex_uv.exec(line)) !== null) {
-
-            // f vertex/uv vertex/uv vertex/uv
-            // 0                  1    2    3    4    5    6   7          8
-            // ["f 1/1 2/2 3/3", "1", "1", "2", "2", "3", "3", undefined, undefined]
-
-            state.addFace(result[1], result[3], result[5], result[7], result[2], result[4], result[6], result[8]);
-          } else if ((result = this.regexp.face_vertex_normal.exec(line)) !== null) {
-
-            // f vertex//normal vertex//normal vertex//normal
-            // 0                     1    2    3    4    5    6   7          8
-            // ["f 1//1 2//2 3//3", "1", "1", "2", "2", "3", "3", undefined, undefined]
-
-            state.addFace(result[1], result[3], result[5], result[7], undefined, undefined, undefined, undefined, result[2], result[4], result[6], result[8]);
-          } else if ((result = this.regexp.face_vertex.exec(line)) !== null) {
-
-            // f vertex vertex vertex
-            // 0            1    2    3   4
-            // ["f 1 2 3", "1", "2", "3", undefined]
-
-            state.addFace(result[1], result[2], result[3], result[4]);
-          } else {
-
-            this.onError("Unexpected face line: '" + line + "'");
-          }
-        } else if (lineFirstChar === "l") {
-
-          var lineParts = line.substring(1).trim().split(" ");
-          var lineVertices = [],
-              lineUVs = [];
-
-          if (line.indexOf("/") === -1) {
-
-            lineVertices = lineParts;
-          } else {
-
-            for (var li = 0, llen = lineParts.length; li < llen; li++) {
-
-              var parts = lineParts[li].split("/");
-
-              if (parts[0] !== "") lineVertices.push(parts[0]);
-              if (parts[1] !== "") lineUVs.push(parts[1]);
-            }
-          }
-          state.addLineGeometry(lineVertices, lineUVs);
-        } else if ((result = this.regexp.object_pattern.exec(line)) !== null) {
-
-          // o object_name
-          // or
-          // g group_name
-
-          // WORKAROUND: https://bugs.chromium.org/p/v8/issues/detail?id=2869
-          // var name = result[ 0 ].substr( 1 ).trim();
-          var name = (" " + result[0].substr(1).trim()).substr(1);
-
-          state.startObject(name);
-        } else if (this.regexp.material_use_pattern.test(line)) {
-
-          // material
-
-          state.object.startMaterial(line.substring(7).trim(), state.materialLibraries);
-        } else if (this.regexp.material_library_pattern.test(line)) {
-
-          // mtl file
-
-          state.materialLibraries.push(line.substring(7).trim());
-        } else if ((result = this.regexp.smoothing_pattern.exec(line)) !== null) {
-
-          // smooth shading
-
-          // @todo Handle files that have varying smooth values for a set of faces inside one geometry,
-          // but does not define a usemtl for each face set.
-          // This should be detected and a dummy material created (later MultiMaterial and geometry groups).
-          // This requires some care to not create extra material on each smooth value for "normal" obj files.
-          // where explicit usemtl defines geometry groups.
-          // Example asset: examples/models/obj/cerberus/Cerberus.obj
-
-          var value = result[1].trim().toLowerCase();
-          state.object.smooth = value === '1' || value === 'on';
-
-          var material = state.object.currentMaterial();
-          if (material) {
-
-            material.smooth = state.object.smooth;
-          }
-        } else {
-
-          // Handle null terminated files without exception
-          if (line === '\0') continue;
-
-          this.onError("Unexpected line: '" + line + "'");
-        }
-      }
-
-      state.finalize();
-
-      var container = new THREE.Group();
-      container.materialLibraries = [].concat(state.materialLibraries);
-
-      for (var i = 0, l = state.objects.length; i < l; i++) {
-
-        var object = state.objects[i];
-        var geometry = object.geometry;
-        var materials = object.materials;
-        var isLine = geometry.type === 'Line';
-
-        // Skip o/g line declarations that did not follow with any faces
-        if (geometry.vertices.length === 0) continue;
-
-        var buffergeometry = new THREE.BufferGeometry();
-
-        buffergeometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(geometry.vertices), 3));
-
-        if (geometry.normals.length > 0) {
-
-          buffergeometry.addAttribute('normal', new THREE.BufferAttribute(new Float32Array(geometry.normals), 3));
-        } else {
-
-          buffergeometry.computeVertexNormals();
-        }
-
-        if (geometry.uvs.length > 0) {
-
-          buffergeometry.addAttribute('uv', new THREE.BufferAttribute(new Float32Array(geometry.uvs), 2));
-        }
-
-        // Create materials
-
-        var createdMaterials = [];
-
-        for (var mi = 0, miLen = materials.length; mi < miLen; mi++) {
-
-          var sourceMaterial = materials[mi];
-          var material = undefined;
-
-          if (this.materials !== null) {
-
-            material = this.materials.create(sourceMaterial.name);
-
-            // mtl etc. loaders probably can't create line materials correctly, copy properties to a line material.
-            if (isLine && material && !(material instanceof THREE.LineBasicMaterial)) {
-
-              var materialLine = new THREE.LineBasicMaterial();
-              materialLine.copy(material);
-              material = materialLine;
-            }
-          }
-
-          if (!material) {
-
-            material = !isLine ? new THREE.MeshPhongMaterial() : new THREE.LineBasicMaterial();
-            material.name = sourceMaterial.name;
-          }
-
-          material.shading = sourceMaterial.smooth ? THREE.SmoothShading : THREE.FlatShading;
-
-          createdMaterials.push(material);
-        }
-
-        // Create mesh
-
-        var mesh;
-
-        if (createdMaterials.length > 1) {
-
-          for (var mi = 0, miLen = materials.length; mi < miLen; mi++) {
-
-            var sourceMaterial = materials[mi];
-            buffergeometry.addGroup(sourceMaterial.groupStart, sourceMaterial.groupCount, mi);
-          }
-
-          var multiMaterial = new THREE.MultiMaterial(createdMaterials);
-          mesh = !isLine ? new THREE.Mesh(buffergeometry, multiMaterial) : new THREE.LineSegments(buffergeometry, multiMaterial);
-        } else {
-
-          mesh = !isLine ? new THREE.Mesh(buffergeometry, createdMaterials[0]) : new THREE.LineSegments(buffergeometry, createdMaterials[0]);
-        }
-
-        mesh.name = object.name;
-
-        container.add(mesh);
-      }
-
-      if (debug) {
-        console.timeEnd('OBJLoader');
-      }
-
-      return container;
-    }
-
-  };
-};
 
 /***/ })
 /******/ ]);

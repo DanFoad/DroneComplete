@@ -21,6 +21,134 @@ class FlightPlanner extends Component {
         this.toggleUnitSwitch = this.toggleUnitSwitch.bind(this)
     }
 
+    componentDidMount() {
+        this.canvas.width = this.canvas.clientWidth
+        this.canvas.height = this.canvas.clientHeight
+        this.ctx = this.canvas.getContext('2d')
+        
+        var ctx = this.ctx
+        var h = this.canvas.height
+        var w = this.canvas.width
+        var shift = 120
+
+        // Cube
+        ctx.fillStyle = '#444444'
+        ctx.font = '256px FontAwesome'
+        ctx.textAlign = 'center'
+        ctx.fillText('', w/2 + 8, h/1.05 - shift)
+
+        ctx.strokeStyle = '#2E7D32'
+
+        // Upper ellipse
+        ctx.beginPath()
+        ctx.ellipse(w/2, h/3.2 - shift, w/3, w/14, 0, 0, 2 * Math.PI)
+        ctx.stroke()
+        ctx.closePath()
+
+        // Middle ellipse
+        ctx.beginPath()
+        ctx.ellipse(w/2, h/2 - shift, w/4, w/15, 0, 0, 2 * Math.PI)
+        ctx.stroke()
+        ctx.closePath()
+
+        // Lower ellipse
+        ctx.beginPath()
+        ctx.ellipse(w/2, h/1.5 - shift, w/6, w/20, 0, 0, 2 * Math.PI)
+        ctx.stroke()
+        ctx.closePath()
+
+        // Parallelogram around middle ellipse
+        ctx.strokeStyle = '#1B5E20'
+        ctx.beginPath()
+        var poly = [
+            (w/2 - w/4 - 38),(h/2 + w/15 - shift),
+            (w/2 - w/4 + 36),(h/2 - w/15 - shift),
+            (w/2 + w/4 + 38),(h/2 - w/15 - shift),
+            (w/2 + w/4 - 36),(h/2 + w/15 - shift)
+        ]
+        ctx.moveTo(poly[0], poly[1])
+        for (var i = 0; i < poly.length; i+=2) ctx.lineTo(poly[i], poly[i+1])
+        ctx.lineTo(poly[0], poly[1])
+        ctx.stroke()
+        ctx.closePath()
+
+        // Arrows
+
+        // Set 1: Nadir
+        ctx.beginPath()
+        ctx.fillStyle = '#1B5E20'
+        ctx.lineWidth = 6
+        ctx.moveTo(poly[0] + 48, poly[1])
+        ctx.lineTo(poly[0] + 48, poly[1] + 64)
+        ctx.stroke()
+        ctx.moveTo(poly[0] + 40, poly[1] + 64)
+        ctx.lineTo(poly[0] + 56, poly[1] + 64)
+        ctx.lineTo(poly[0] + 48, poly[1] + 76)
+        ctx.fill()
+        ctx.closePath()
+
+        // Set 2: Oblique
+        ctx.beginPath()
+        ctx.strokeStyle = '#2E7D32'
+        ctx.fillStyle = '#2E7D32'
+        ctx.moveTo(w/2 + w/4, h/2 - shift)
+        ctx.lineTo(w/2 + w/4 - 64, h/2 - shift + 64)
+        ctx.stroke()
+        ctx.moveTo(w/2 + w/4 - 56, h/2 - shift + 65)
+        ctx.lineTo(w/2 + w/4 - 68, h/2 - shift + 59)
+        ctx.lineTo(w/2 + w/4 - 70, h/2 - shift + 72)
+        ctx.fill()
+        ctx.closePath()
+
+        // Set 3: Oblique
+        ctx.beginPath()
+        ctx.moveTo(w/2 + w/6, h/1.5 - shift)
+        ctx.lineTo(w/2 + w/6 - 84, h/1.5 - shift + 44)
+        ctx.stroke()
+        ctx.moveTo(w/2 + w/6 - 78, h/1.5 - shift + 50)
+        ctx.lineTo(w/2 + w/6 - 88, h/1.5 - shift + 39)
+        ctx.lineTo(w/2 + w/6 - 96, h/1.5 - shift + 52)
+        ctx.fill()
+        ctx.closePath()
+
+        // Set 4: Oblique
+        ctx.beginPath()
+        ctx.moveTo(w/2 + w/3, h/3.2 - shift)
+        ctx.lineTo(w/2 + w/3 - 44, h/3.2 - shift + 84)
+        ctx.stroke()
+        ctx.moveTo(w/2 + w/3 - 36, h/3.2 - shift + 85)
+        ctx.lineTo(w/2 + w/3 - 50, h/3.2 - shift + 81)
+        ctx.lineTo(w/2 + w/3 - 48, h/3.2 - shift + 92)
+        ctx.fill()
+        ctx.closePath()
+
+        // Text Titles
+        ctx.fillStyle = '#000000'
+        ctx.font = 'bold 16px Roboto'
+        ctx.textAlign = 'center'
+        ctx.fillText('Set 1: Nadir', poly[0] + 48, poly[1] + shift)
+        ctx.textAlign = 'left'
+        ctx.fillText('Set 2: Oblique', w/2 + w/4 + 16, h/2 + 16 - shift)
+        ctx.fillText('Set 3: Oblique', w/2 + w/6 + 16, h/1.5 + 16 - shift)
+        ctx.fillText('Set 4: Oblique', w/2 + w/3 + 16, h/3.2 + 16 - shift)
+
+        // Dotted Lines
+        ctx.beginPath()
+        ctx.strokeStyle = '#888888'
+        ctx.lineWidth = 1
+        ctx.setLineDash([5, 15])
+        ctx.moveTo(w/2 - w/3, h/3.2 - shift)
+        ctx.lineTo(w/2 - 128, h/1.05 - shift - 148)
+        ctx.stroke()
+        ctx.closePath()
+
+        ctx.beginPath()
+        ctx.moveTo(w/2 + w/3, h/3.2 - shift)
+        ctx.lineTo(w/2 + 128, h/1.05 - shift - 148)
+        ctx.stroke()
+        ctx.closePath()
+    }
+
     componentWillReceiveProps(nextProps) {
         this.setState({
             width: nextProps.width,
@@ -92,7 +220,7 @@ class FlightPlanner extends Component {
                     </div>
                 </div>
                 <div className='planner'>
-
+                    <canvas ref={canvas => {this.canvas = canvas}} id='planner__canvas'></canvas>
                 </div>
             </div>
         )

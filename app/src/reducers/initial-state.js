@@ -5,6 +5,6 @@ const flightplanner = {
 }
 
 export default {
-    page: 2,
+    page: 0,
     flightplanner,
 }
