@@ -11345,7 +11345,24 @@ var FlightPlanner = function (_Component) {
             maxWidth: 1000,
             height: _this.props.height,
             maxHeight: 1000,
-            unit: _this.props.unit
+            unit: _this.props.unit,
+            values: [{
+                height: 100,
+                width: 100,
+                angle: 0
+            }, {
+                height: 100,
+                width: 100,
+                angle: 45
+            }, {
+                height: 75,
+                width: 75,
+                angle: 80
+            }, {
+                height: 175,
+                width: 125,
+                angle: 30
+            }]
         };
 
         _this.toggleUnitSwitch = _this.toggleUnitSwitch.bind(_this);
@@ -11357,6 +11374,39 @@ var FlightPlanner = function (_Component) {
         value: function componentDidMount() {
             this.canvas.width = this.canvas.clientWidth;
             this.canvas.height = this.canvas.clientHeight;
+
+            this.draw();
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            this.setState({
+                width: nextProps.width,
+                height: nextProps.height,
+                unit: nextProps.unit,
+                values: [{
+                    height: nextProps.height * 2,
+                    width: nextProps.width * 2,
+                    angle: this.state.values[0].angle
+                }, {
+                    height: nextProps.height * 2,
+                    width: nextProps.width * 2,
+                    angle: this.state.values[1].angle
+                }, {
+                    height: nextProps.height * 1.5,
+                    width: nextProps.width * 1.5,
+                    angle: this.state.values[2].angle
+                }, {
+                    height: nextProps.height * 3.5,
+                    width: nextProps.width * 2.5,
+                    angle: this.state.values[3].angle
+                }]
+            });
+        }
+    }, {
+        key: 'draw',
+        value: function draw() {
+            if (this.canvas == undefined) return;
             this.ctx = this.canvas.getContext('2d');
 
             var ctx = this.ctx;
@@ -11364,10 +11414,14 @@ var FlightPlanner = function (_Component) {
             var w = this.canvas.width;
             var shift = 120;
 
+            // Clear canvas
+            ctx.clearRect(0, 0, w, h);
+
             // Cube
             ctx.fillStyle = '#444444';
             ctx.font = '256px FontAwesome';
             ctx.textAlign = 'center';
+            ctx.setLineDash([]);
             ctx.fillText('', w / 2 + 8, h / 1.05 - shift);
 
             ctx.strokeStyle = '#2E7D32';
@@ -11476,25 +11530,46 @@ var FlightPlanner = function (_Component) {
             ctx.lineTo(w / 2 + 128, h / 1.05 - shift - 148);
             ctx.stroke();
             ctx.closePath();
-        }
-    }, {
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            this.setState({
-                width: nextProps.width,
-                height: nextProps.height,
-                unit: nextProps.unit
-            });
+
+            ctx.textAlign = 'center';
+            ctx.font = '12px Roboto';
+            ctx.strokeStyle = '#000000';
+
+            var unit = this.state.unit == 'metres' ? 'm' : '"';
+
+            // Set 1: Nadir
+            ctx.fillText('height: ' + this.state.values[0].height + unit, poly[0] + 48, poly[1] + shift + 18);
+            ctx.fillText('width: ' + this.state.values[0].width + unit, poly[0] + 48, poly[1] + shift + 36);
+            ctx.fillText('angle: ' + this.state.values[0].angle + '°', poly[0] + 48, poly[1] + shift + 54);
+
+            // Set 2: Oblique
+            ctx.fillText('height: ' + this.state.values[1].height + unit, w / 2 + w / 4 + 68, h / 2 + 16 - shift + 18);
+            ctx.fillText('width: ' + this.state.values[1].width + unit, w / 2 + w / 4 + 68, h / 2 + 16 - shift + 36);
+            ctx.fillText('angle: ' + this.state.values[1].angle + '°', w / 2 + w / 4 + 68, h / 2 + 16 - shift + 54);
+
+            // Set 3: Oblique
+            ctx.fillText('height: ' + this.state.values[2].height + unit, w / 2 + w / 6 + 68, h / 1.5 + 16 - shift + 18);
+            ctx.fillText('width: ' + this.state.values[2].width + unit, w / 2 + w / 6 + 68, h / 1.5 + 16 - shift + 36);
+            ctx.fillText('angle: ' + this.state.values[2].angle + '°', w / 2 + w / 6 + 68, h / 1.5 + 16 - shift + 54);
+
+            // Set 4: Oblique
+            ctx.fillText('height: ' + this.state.values[3].height + unit, w / 2 + w / 3 + 68, h / 3.2 + 16 - shift + 18);
+            ctx.fillText('width: ' + this.state.values[3].width + unit, w / 2 + w / 3 + 68, h / 3.2 + 16 - shift + 36);
+            ctx.fillText('angle: ' + this.state.values[3].angle + '°', w / 2 + w / 3 + 68, h / 3.2 + 16 - shift + 54);
         }
     }, {
         key: 'setWidth',
         value: function setWidth(value) {
-            if (value <= this.state.maxWidth && value >= 0) _AppActions2.default.setFlightPlannerWidth(value);
+            if (value >= this.state.maxWidth || value <= 0) return;
+
+            _AppActions2.default.setFlightPlannerWidth(value);
         }
     }, {
         key: 'setHeight',
         value: function setHeight(value) {
-            if (value <= this.state.maxHeight && value >= 0) _AppActions2.default.setFlightPlannerHeight(value);
+            if (value >= this.state.maxHeight || value <= 0) return;
+
+            _AppActions2.default.setFlightPlannerHeight(value);
         }
     }, {
         key: 'getUnitSwitch',
@@ -11518,6 +11593,8 @@ var FlightPlanner = function (_Component) {
         key: 'render',
         value: function render() {
             var _this2 = this;
+
+            this.draw();
 
             return _react2.default.createElement(
                 'div',
