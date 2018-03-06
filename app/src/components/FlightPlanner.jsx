@@ -44,6 +44,13 @@ class FlightPlanner extends Component {
     }
 
     componentDidMount() {
+        this.canvas.addEventListener('resize', (e) => {
+            this.canvas.width = this.canvas.clientWidth
+            this.canvas.height = this.canvas.clientHeight
+            
+            this.draw()
+        })
+        
         this.canvas.width = this.canvas.clientWidth
         this.canvas.height = this.canvas.clientHeight
         
