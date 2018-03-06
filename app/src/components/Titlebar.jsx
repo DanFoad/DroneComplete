@@ -6,19 +6,19 @@ import {} from '../style/global.scss'
 
 export default class Titlebar extends Component {
 
-    minimize() {
-        remote.BrowserWindow.getFocusedWindow().minimize()
+    minimise() {
+        remote.BrowserWindow.getCurrentWindow().minimize()
     }
 
     maximise() {
-        if (remote.BrowserWindow.isMaximized())
-            remote.BrowserWindow.getFocusedWindow().restore()
+        if (remote.BrowserWindow.getCurrentWindow().isMaximized())
+            remote.BrowserWindow.getCurrentWindow().restore()
         else
-        remote.BrowserWindow.getFocusedWindow().maximize()
+        remote.BrowserWindow.getCurrentWindow().maximize()
     }
 
     close() {
-        remote.BrowserWindow.getFocusedWindow.close()
+        remote.BrowserWindow.getCurrentWindow().close()
     }
 
     render() {
@@ -26,7 +26,7 @@ export default class Titlebar extends Component {
             <div className='titlebar'>
                 <div className='titlebar__button close' onClick={ this.close }><img src='src/img/close.png' /></div>
                 <div className='titlebar__button restore' onClick={ this.maximise }><img src='src/img/window-restore.png' /></div>
-                <div className='titlebar__button minimize' onClick={ this.close }><img src='src/img/window-minimize.png' /></div>
+                <div className='titlebar__button minimize' onClick={ this.minimise }><img src='src/img/window-minimize.png' /></div>
             </div>
         )
     }
