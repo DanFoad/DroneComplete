@@ -11,6 +11,8 @@ export default class Titlebar extends Component {
         this.state = {
             maximise: 'src/img/window-restore.png'
         }
+
+        this.maximise = this.maximise.bind(this)
     }
 
     minimise() {
