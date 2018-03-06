@@ -7,18 +7,18 @@ import {} from '../style/global.scss'
 export default class Titlebar extends Component {
 
     minimise() {
-        remote.BrowserWindow.getCurrentWindow().minimize()
+        remote.getCurrentWindow().minimize()
     }
 
     maximise() {
-        if (remote.BrowserWindow.getCurrentWindow().isMaximized())
-            remote.BrowserWindow.getCurrentWindow().restore()
+        if (remote.getCurrentWindow().isMaximized())
+            remote.getCurrentWindow().restore()
         else
-        remote.BrowserWindow.getCurrentWindow().maximize()
+        remote.getCurrentWindow().maximize()
     }
 
     close() {
-        remote.BrowserWindow.getCurrentWindow().close()
+        remote.getCurrentWindow().close()
     }
 
     render() {
