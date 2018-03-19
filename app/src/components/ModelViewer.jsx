@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {render} from 'react-dom'
 import * as THREE from 'three'
 import OBJLoader from 'three-obj-loader'
+import MTLLoader from 'three-mtl-loader'
 
 OBJLoader(THREE)
 
@@ -17,7 +18,7 @@ export default class ModelViewer extends Component {
             pos: {
                 x: 0,
                 y: 1.3,
-                z: 5,
+                z: 50,
             },
             dragging: false,
             rotating: false,
@@ -49,8 +50,36 @@ export default class ModelViewer extends Component {
         this.renderer.setClearColor(0xFFFFFF)
         this.canvas.appendChild(this.renderer.domElement)
 
+        /*
+        var mtlLoader = new MTLLoader();
+        mtlLoader.setPath('src/odm_texturing/')
+        mtlLoader.load('odm_textured_model.mtl', (materials) => {
+            materials.preload()
+
+            var objLoader = new THREE.OBJLoader()
+            objLoader.setMaterials(materials)
+            objLoader.setPath('src/odm_texturing/')
+            objLoader.load('odm_textured_model.obj', (obj) => {
+                console.log(obj)
+                this.model = obj
+                this.scene.add(this.model)
+    
+                var Light = new THREE.AmbientLight(0x45Ab76)
+                Light.position.set(new THREE.Vector3(10, 10, 10))
+                var Light2 = new THREE.PointLight(0xFFFFFF)
+                Light2.position.set(new THREE.Vector3(10, 10, 10))
+                this.scene.add(Light)
+                this.scene.add(Light2)
+    
+                this.setupListeners()
+    
+                this.animate()
+            })
+        })*/
+
         var loader = new THREE.OBJLoader()
-        loader.load('src/img/teapot.obj', (obj) => {
+        loader.load('src/img/odm_textured_model.obj', (obj) => {
+            console.log(obj)
             this.model = obj
             this.model.traverse((child) => {
                 if (child instanceof THREE.Mesh) {
@@ -103,8 +132,8 @@ export default class ModelViewer extends Component {
             if (this.state.dragging) {
                 this.setState({
                     pos: {
-                        x: this.state.pos.x += (this.state.dragStart.x - e.pageX) / 100,
-                        y: this.state.pos.y += (e.pageY - this.state.dragStart.y) / 100,
+                        x: this.state.pos.x += (this.state.dragStart.x - e.pageX) / 10,
+                        y: this.state.pos.y += (e.pageY - this.state.dragStart.y) / 10,
                         z: this.state.pos.z,
                     },
                     dragStart: {
@@ -126,11 +155,11 @@ export default class ModelViewer extends Component {
         this.canvas.addEventListener('wheel', (e) => {
             if (e.deltaY > 0) {
                 this.setState({
-                    pos: { ...this.state.pos, z: this.state.pos.z + 1 }
+                    pos: { ...this.state.pos, z: this.state.pos.z + 10 }
                 })
             } else {
                 this.setState({
-                    pos: { ...this.state.pos, z: this.state.pos.z - 1 }
+                    pos: { ...this.state.pos, z: this.state.pos.z - 10 }
                 })
             }
         })
@@ -151,7 +180,6 @@ export default class ModelViewer extends Component {
     }
 
     setFace(face) {
-        console.log(face)
         switch (face) {
             case 'top':
                 this.setState({ rot: { x: Math.PI / 2, y: 0, z: 0 } })

@@ -20,7 +20,7 @@ export default class ModelGenerator extends Component {
     }
 
     loadImages() {
-        fs.readdir('./app/src/img/input', (err, files) => {
+        fs.readdir('./app/src/img/thumbs', (err, files) => {
             files.forEach(file => {
                 this.setState({ images: [ ...this.state.images, file ] })
             })
