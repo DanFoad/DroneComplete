@@ -11768,9 +11768,51 @@ var GeneratorProgress = function (_Component) {
             });
         }
     }, {
+        key: 'isCurrent',
+        value: function isCurrent(index) {
+            return index == this.state.status;
+        }
+    }, {
+        key: 'isComplete',
+        value: function isComplete(index) {
+            if (index <= this.state.status) return ' complete';else return '';
+        }
+    }, {
+        key: 'displayProgressBar',
+        value: function displayProgressBar() {
+            var _this2 = this;
+
+            var sections = ['Loading Images', 'Resizing Images', 'Extracting Focal Lengths', 'Extracting HAHOG Features', 'Matching Image Pairs', 'Merging Features', 'Reconstructing Scene', 'Meshing', 'Computing Depthmaps', 'Cleaning Depthmaps', 'Complete'];
+
+            var bar = [];
+
+            sections.forEach(function (el, index) {
+                bar.push(_react2.default.createElement(
+                    'div',
+                    { className: 'progress__section' + _this2.isComplete(index), key: index },
+                    index + 1,
+                    _this2.isCurrent(index) ? _react2.default.createElement(
+                        'div',
+                        { className: 'progress__section--state' },
+                        el
+                    ) : ''
+                ));
+
+                if (index !== sections.length - 1) bar.push(_react2.default.createElement('div', { className: 'progress__bar' + _this2.isComplete(index + 1), key: 'bar' + index }));
+            });
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'generator__progress' },
+                ' ',
+                bar,
+                ' '
+            );
+        }
+    }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement('div', { className: 'generator__progress' });
+            return this.displayProgressBar();
         }
     }]);
 
@@ -11847,10 +11889,14 @@ var GeneratorView = function (_Component) {
                     _react2.default.createElement(
                         'p',
                         { className: 'generator__filename' },
-                        this.state.images[i].replace('_thumb.jpeg', '.jpeg')
+                        this.state.images[i].path.replace('_thumb.jpeg', '.jpeg')
                     ),
-                    _react2.default.createElement('img', { src: './src/img/thumbs/' + this.state.images[i] }),
-                    _react2.default.createElement('div', { className: 'generator__progress' })
+                    _react2.default.createElement('img', { src: './src/img/thumbs/' + this.state.images[i].path }),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'generator__percentage' },
+                        _react2.default.createElement('div', { className: 'generator__percentage--progress', style: { width: this.state.images[i].percentage + '%' } })
+                    )
                 ));
             }
 
@@ -11924,7 +11970,8 @@ var ModelGenerator = function (_Component) {
         var _this = _possibleConstructorReturn(this, (ModelGenerator.__proto__ || Object.getPrototypeOf(ModelGenerator)).call(this, props));
 
         _this.state = {
-            status: 'STATUS_LOAD',
+            status: 'STATUS_FOCAL',
+            statusIndex: 2,
             images: []
         };
 
@@ -11937,28 +11984,88 @@ var ModelGenerator = function (_Component) {
         value: function loadImages() {
             var _this2 = this;
 
+            var i = 0;
             _fs2.default.readdir('./app/src/img/thumbs', function (err, files) {
                 files.forEach(function (file) {
-                    _this2.setState({ images: [].concat(_toConsumableArray(_this2.state.images), [file]) });
+                    var image = { path: file, percentage: 0 };
+                    if (i < 12) image.percentage = 100;else if (i == 12) image.percentage = 50;
+
+                    i++;
+
+                    _this2.setState({ images: [].concat(_toConsumableArray(_this2.state.images), [image]) });
                 });
-                _this2.setState({ status: 'STATUS_LOADED' });
             });
         }
     }, {
         key: 'getGeneratorStatus',
         value: function getGeneratorStatus() {
-            if (this.state.status == 'STATUS_LOAD') {
-                return _react2.default.createElement(
-                    'p',
-                    null,
-                    'Loading images...'
-                );
-            } else {
-                return _react2.default.createElement(
-                    'p',
-                    null,
-                    'Images loaded'
-                );
+            switch (this.state.status) {
+                case 'STATUS_LOAD':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Loading images from path...'
+                    );
+                case 'STATUS_RESIZE':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Resizing images for usage...'
+                    );
+                case 'STATUS_FOCAL':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Extracting focal lengths for images...'
+                    );
+                case 'STATUS_HAHOG':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Generating HAHOG (feature point detection) features...'
+                    );
+                case 'STATUS_MATCH':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Matching image pairs...'
+                    );
+                case 'STATUS_MERGE':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Merging the features of connected pairs...'
+                    );
+                case 'STATUS_RECONSTRUCT':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Reconstructing the scene from connected imagery...'
+                    );
+                case 'STATUS_MESHING':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Generating object mesh from scene...'
+                    );
+                case 'STATUS_COMPDEPTH':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Computing depthmaps of mesh...'
+                    );
+                case 'STATUS_CLEANDEPTH':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Cleaning up depthmaps of mesh...'
+                    );
+                case 'STATUS_DONE':
+                    return _react2.default.createElement(
+                        'p',
+                        null,
+                        'Process Complete'
+                    );
             }
         }
     }, {
@@ -11970,7 +12077,7 @@ var ModelGenerator = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'generator__status' },
-                    _react2.default.createElement(_GeneratorProgress2.default, { status: this.state.status }),
+                    _react2.default.createElement(_GeneratorProgress2.default, { status: this.state.statusIndex }),
                     this.getGeneratorStatus()
                 ),
                 _react2.default.createElement(_GeneratorView2.default, { images: this.state.images })
@@ -12062,6 +12169,11 @@ var ModelViewer = function (_Component) {
                 x: 0,
                 y: 0,
                 z: 0
+            },
+            details: {
+                vertices: 0,
+                faces: 0,
+                materials: 0
             }
         };
 
@@ -12083,12 +12195,14 @@ var ModelViewer = function (_Component) {
             this.renderer.setClearColor(0xFFFFFF);
             this.canvas.appendChild(this.renderer.domElement);
 
-            /*
-            var mtlLoader = new MTLLoader();
-            mtlLoader.setPath('src/odm_texturing/')
-            mtlLoader.load('odm_textured_model.mtl', (materials) => {
-                materials.preload()
-                  var objLoader = new THREE.OBJLoader()
+            var mtlLoader = new _threeMtlLoader2.default();
+            mtlLoader.setPath('src/odm_texturing/');
+            mtlLoader.load('odm_textured_model.mtl', function (materials) {
+                materials.preload();
+                var materialCount = Object.keys(materials.materials).length;
+                _this2.setState({ details: _extends({}, _this2.state.details, { materials: materialCount }) });
+            });
+            /*   var objLoader = new THREE.OBJLoader()
                 objLoader.setMaterials(materials)
                 objLoader.setPath('src/odm_texturing/')
                 objLoader.load('odm_textured_model.obj', (obj) => {
@@ -12108,10 +12222,11 @@ var ModelViewer = function (_Component) {
 
             var loader = new THREE.OBJLoader();
             loader.load('src/img/odm_textured_model.obj', function (obj) {
-                console.log(obj);
                 _this2.model = obj;
                 _this2.model.traverse(function (child) {
                     if (child instanceof THREE.Mesh) {
+                        var geo = new THREE.Geometry().fromBufferGeometry(child.geometry);
+                        _this2.setState({ details: _extends({}, _this2.state.details, { vertices: geo.vertices.length, faces: geo.faces.length }) });
                         child.material = new THREE.MeshNormalMaterial();
                     }
                 });
@@ -12246,7 +12361,46 @@ var ModelViewer = function (_Component) {
                 _react2.default.createElement(_ViewerBar2.default, { callback: this.setFace }),
                 _react2.default.createElement('div', { ref: function ref(canvas) {
                         return _this4.canvas = canvas;
-                    }, className: 'viewercanvas' })
+                    }, className: 'viewercanvas' }),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'viewer__details' },
+                    _react2.default.createElement(
+                        'h3',
+                        null,
+                        'Information'
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        'Material Count',
+                        _react2.default.createElement(
+                            'span',
+                            null,
+                            this.state.details.materials
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        'Vertex Count',
+                        _react2.default.createElement(
+                            'span',
+                            null,
+                            this.state.details.vertices
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        'Face Count',
+                        _react2.default.createElement(
+                            'span',
+                            null,
+                            this.state.details.faces
+                        )
+                    )
+                )
             );
         }
     }]);
@@ -33636,7 +33790,7 @@ exports = module.exports = __webpack_require__(115)();
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 100;\n  src: local(\"Roboto Thin\"), local(\"Roboto-Thin\"), url(\"/src/style/font/Roboto/Roboto-Thin.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Light\"), local(\"Roboto-Light\"), url(\"/src/style/font/Roboto/Roboto-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto\"), local(\"Roboto-Regular\"), url(\"/src/style/font/Roboto/Roboto-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 500;\n  src: local(\"Roboto Medium\"), local(\"Roboto-Medium\"), url(\"/src/style/font/Roboto/Roboto-Medium.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 700;\n  src: local(\"Roboto Bold\"), local(\"Roboto-Bold\"), url(\"/src/style/font/Roboto/Roboto/Roboto-Bold.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Condensed Light\"), local(\"RobotoCondensed-Light\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto Condensed\"), local(\"RobotoCondensed-Regular\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box; }\n  *:before, *:after {\n    box-sizing: inherit; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-family: Roboto, sans-serif; }\n\n#app {\n  height: 100%;\n  width: 100%;\n  font-size: 62.5%; }\n\n.main {\n  height: 100%;\n  width: 100%;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.contents {\n  display: flex;\n  flex: 1;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.page {\n  flex: 1;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch;\n  justify-content: stretch; }\n\n.titlebar {\n  height: 30px;\n  background-color: #616161;\n  color: #f5f5f5;\n  display: flex;\n  flex-flow: row-reverse nowrap;\n  align-items: center;\n  -webkit-app-region: drag; }\n\n.titlebar__button {\n  height: 100%;\n  display: inline-flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center;\n  padding: 0 12px;\n  transition: 0.1s background-color;\n  cursor: pointer;\n  -webkit-app-region: no-drag;\n  user-select: none; }\n  .titlebar__button img {\n    display: inline-block;\n    height: 20px; }\n  .titlebar__button.minimize {\n    align-items: flex-end;\n    padding-bottom: 2px; }\n  .titlebar__button:hover {\n    background-color: rgba(0, 0, 0, 0.4); }\n  .titlebar__button.close:hover {\n    background-color: #e84e40; }\n\n.sidebar {\n  width: 360px;\n  background-color: #72d572;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch;\n  border-right: 1px solid #259b24; }\n\n.sidebar__title {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 100;\n  width: 100%;\n  padding: 16px 0;\n  text-align: center;\n  color: #0d5302;\n  font-size: 4em;\n  border-bottom: 1px solid #2baf2b; }\n\n.nav {\n  list-style: none;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.nav__item {\n  color: #FFFFFF;\n  cursor: pointer;\n  padding: 16px 0;\n  font-size: 1.6em;\n  text-transform: uppercase;\n  transition: 0.1s background-color;\n  border-top: 1px solid transparent;\n  border-bottom: 1px solid transparent; }\n  .nav__item i {\n    display: inline-block;\n    padding: 0 16px 0 24px; }\n  .nav__item.selected {\n    background-color: #42bd41;\n    border-bottom-color: #2baf2b;\n    border-top-color: #2baf2b;\n    border-right: 1px solid #42bd41;\n    width: calc(100% + 1px); }\n    .nav__item.selected:first-child {\n      border-top-color: transparent; }\n  .nav__item:hover {\n    background-color: #42bd41; }\n\n.sidebar__footer {\n  margin-top: auto;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  height: 64px;\n  border-top: 1px solid #42bd41;\n  color: #FFFFFF; }\n\n.sidebar__settings {\n  width: 64px;\n  border-right: 1px solid #42bd41;\n  height: 100%;\n  text-align: center;\n  line-height: 64px;\n  font-size: 2.2em;\n  cursor: pointer;\n  transition: 0.1s background-color; }\n  .sidebar__settings:hover {\n    background-color: #42bd41; }\n\n.sidebar__credits {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 300;\n  font-size: 2em;\n  text-align: center;\n  flex: 1; }\n\n.flightplanner {\n  flex: 1;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.dimensions {\n  width: 272px;\n  background-color: #42bd41;\n  color: #FFFFFF; }\n\n.dimensions__title {\n  padding: 12px;\n  font-size: 1.8em;\n  font-weight: 400; }\n\n.dimensions__input {\n  margin: 8px 48px 32px 24px;\n  position: relative; }\n  .dimensions__input h3 {\n    text-transform: uppercase;\n    margin-bottom: 4px; }\n  .dimensions__input input[type=number] {\n    -webkit-appearance: none;\n    border: 1px solid #757575;\n    background-color: #72d572;\n    width: 100%;\n    height: 48px;\n    text-align: center;\n    padding-right: 16px;\n    font-size: 1.6em;\n    font-family: 'Roboto Condensed';\n    font-weight: 500;\n    display: inline-block;\n    outline: none; }\n    .dimensions__input input[type=number]:focus {\n      outline: none; }\n  .dimensions__input input[type=number]::-webkit-inner-spin-button,\n  .dimensions__input input[type=number]::-webkit-outer-spin-button {\n    -webkit-appearance: none;\n    margin: 0; }\n  .dimensions__input .dimensions__stepper {\n    position: absolute;\n    right: 0;\n    height: 24px;\n    width: 24px;\n    border: 1px solid #757575;\n    background-color: #bdbdbd;\n    color: #424242;\n    text-align: center;\n    line-height: 24px;\n    cursor: pointer; }\n    .dimensions__input .dimensions__stepper.dimensions__stepper--up {\n      bottom: 24px;\n      border-bottom: 0; }\n    .dimensions__input .dimensions__stepper.dimensions__stepper--down {\n      bottom: 0; }\n\n.dimensions__switch {\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center; }\n  .dimensions__switch .switch__label {\n    font-size: 1.4em;\n    flex: 1; }\n    .dimensions__switch .switch__label:first-child {\n      text-align: right; }\n\n.switch {\n  position: relative;\n  display: inline-block;\n  width: 72px;\n  height: 28px;\n  margin: 0 16px; }\n  .switch.checked .switch__slider:before {\n    right: 2px;\n    left: auto; }\n  .switch .switch__slider {\n    position: absolute;\n    cursor: pointer;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    border-radius: 16px;\n    background-color: #bdbdbd; }\n    .switch .switch__slider:before {\n      position: absolute;\n      content: '';\n      height: 24px;\n      width: 24px;\n      top: 2px;\n      left: 2px;\n      bottom: 2px;\n      border-radius: 50%;\n      background-color: #424242; }\n\n.planner {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n  .planner canvas {\n    flex: 1; }\n\n.modelgenerator {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.generator__status p {\n  font-weight: bold;\n  font-size: 1.8em;\n  padding: 16px 32px; }\n\n.generator__items {\n  flex: 1;\n  overflow-y: scroll;\n  display: flex;\n  flex-flow: row wrap;\n  align-items: center;\n  justify-content: space-between; }\n  .generator__items .generator__item {\n    flex-basis: calc(20% - 64px);\n    overflow: hidden;\n    height: 128px;\n    margin: 32px;\n    position: relative; }\n  .generator__items .generator__filename {\n    position: absolute;\n    display: inline-block;\n    left: 0;\n    right: 0;\n    top: 0;\n    height: 24px;\n    line-height: 24px;\n    text-align: right;\n    padding-right: 16px;\n    background-color: rgba(255, 255, 255, 0.8); }\n  .generator__items .generator__progress {\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    height: 10px;\n    background-color: #9e9e9e; }\n\n.modelviewer {\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch;\n  flex: 1;\n  cursor: move; }\n\n.viewerbar {\n  background-color: #424242;\n  height: 48px;\n  padding-left: 12px; }\n\n.viewerbar__button {\n  -webkit-appearance: none;\n  border: 0;\n  background-color: transparent;\n  text-align: center;\n  height: 100%;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  padding: 0 12px;\n  cursor: pointer;\n  transition: 0.1s background-color; }\n  .viewerbar__button:hover {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .viewerbar__button:focus {\n    outline: none; }\n\n.viewercanvas {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n  .viewercanvas canvas {\n    flex: 1; }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 100;\n  src: local(\"Roboto Thin\"), local(\"Roboto-Thin\"), url(\"/src/style/font/Roboto/Roboto-Thin.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Light\"), local(\"Roboto-Light\"), url(\"/src/style/font/Roboto/Roboto-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto\"), local(\"Roboto-Regular\"), url(\"/src/style/font/Roboto/Roboto-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 500;\n  src: local(\"Roboto Medium\"), local(\"Roboto-Medium\"), url(\"/src/style/font/Roboto/Roboto-Medium.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto';\n  font-style: normal;\n  font-weight: 700;\n  src: local(\"Roboto Bold\"), local(\"Roboto-Bold\"), url(\"/src/style/font/Roboto/Roboto/Roboto-Bold.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 300;\n  src: local(\"Roboto Condensed Light\"), local(\"RobotoCondensed-Light\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Light.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n@font-face {\n  font-family: 'Roboto Condensed';\n  font-style: normal;\n  font-weight: 400;\n  src: local(\"Roboto Condensed\"), local(\"RobotoCondensed-Regular\"), url(\"/src/style/font/Roboto_Condensed/RobotoCondensed-Regular.ttf\") format(\"ttf\");\n  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2212, U+2215; }\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box; }\n  *:before, *:after {\n    box-sizing: inherit; }\n\nhtml, body {\n  width: 100%;\n  height: 100%;\n  font-family: Roboto, sans-serif; }\n\n#app {\n  height: 100%;\n  width: 100%;\n  font-size: 62.5%; }\n\n.main {\n  height: 100%;\n  width: 100%;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.contents {\n  display: flex;\n  flex: 1;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.page {\n  flex: 1;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch;\n  justify-content: stretch; }\n\n.titlebar {\n  height: 30px;\n  background-color: #616161;\n  color: #f5f5f5;\n  display: flex;\n  flex-flow: row-reverse nowrap;\n  align-items: center;\n  -webkit-app-region: drag; }\n\n.titlebar__button {\n  height: 100%;\n  display: inline-flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center;\n  padding: 0 12px;\n  transition: 0.1s background-color;\n  cursor: pointer;\n  -webkit-app-region: no-drag;\n  user-select: none; }\n  .titlebar__button img {\n    display: inline-block;\n    height: 20px; }\n  .titlebar__button.minimize {\n    align-items: flex-end;\n    padding-bottom: 2px; }\n  .titlebar__button:hover {\n    background-color: rgba(0, 0, 0, 0.4); }\n  .titlebar__button.close:hover {\n    background-color: #e84e40; }\n\n.sidebar {\n  width: 360px;\n  background-color: #72d572;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch;\n  border-right: 1px solid #259b24; }\n\n.sidebar__title {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 100;\n  width: 100%;\n  padding: 16px 0;\n  text-align: center;\n  color: #0d5302;\n  font-size: 4em;\n  border-bottom: 1px solid #2baf2b; }\n\n.nav {\n  list-style: none;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.nav__item {\n  color: #FFFFFF;\n  cursor: pointer;\n  padding: 16px 0;\n  font-size: 1.6em;\n  text-transform: uppercase;\n  transition: 0.1s background-color;\n  border-top: 1px solid transparent;\n  border-bottom: 1px solid transparent; }\n  .nav__item i {\n    display: inline-block;\n    padding: 0 16px 0 24px; }\n  .nav__item.selected {\n    background-color: #42bd41;\n    border-bottom-color: #2baf2b;\n    border-top-color: #2baf2b;\n    border-right: 1px solid #42bd41;\n    width: calc(100% + 1px); }\n    .nav__item.selected:first-child {\n      border-top-color: transparent; }\n  .nav__item:hover {\n    background-color: #42bd41; }\n\n.sidebar__footer {\n  margin-top: auto;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  height: 64px;\n  border-top: 1px solid #42bd41;\n  color: #FFFFFF; }\n\n.sidebar__settings {\n  width: 64px;\n  border-right: 1px solid #42bd41;\n  height: 100%;\n  text-align: center;\n  line-height: 64px;\n  font-size: 2.2em;\n  cursor: pointer;\n  transition: 0.1s background-color; }\n  .sidebar__settings:hover {\n    background-color: #42bd41; }\n\n.sidebar__credits {\n  font-family: 'Roboto Condensed', sans-serif;\n  font-weight: 300;\n  font-size: 2em;\n  text-align: center;\n  flex: 1; }\n\n.flightplanner {\n  flex: 1;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: stretch; }\n\n.dimensions {\n  width: 272px;\n  background-color: #42bd41;\n  color: #FFFFFF; }\n\n.dimensions__title {\n  padding: 12px;\n  font-size: 1.8em;\n  font-weight: 400; }\n\n.dimensions__input {\n  margin: 8px 48px 32px 24px;\n  position: relative; }\n  .dimensions__input h3 {\n    text-transform: uppercase;\n    margin-bottom: 4px; }\n  .dimensions__input input[type=number] {\n    -webkit-appearance: none;\n    border: 1px solid #757575;\n    background-color: #72d572;\n    width: 100%;\n    height: 48px;\n    text-align: center;\n    padding-right: 16px;\n    font-size: 1.6em;\n    font-family: 'Roboto Condensed';\n    font-weight: 500;\n    display: inline-block;\n    outline: none; }\n    .dimensions__input input[type=number]:focus {\n      outline: none; }\n  .dimensions__input input[type=number]::-webkit-inner-spin-button,\n  .dimensions__input input[type=number]::-webkit-outer-spin-button {\n    -webkit-appearance: none;\n    margin: 0; }\n  .dimensions__input .dimensions__stepper {\n    position: absolute;\n    right: 0;\n    height: 24px;\n    width: 24px;\n    border: 1px solid #757575;\n    background-color: #bdbdbd;\n    color: #424242;\n    text-align: center;\n    line-height: 24px;\n    cursor: pointer; }\n    .dimensions__input .dimensions__stepper.dimensions__stepper--up {\n      bottom: 24px;\n      border-bottom: 0; }\n    .dimensions__input .dimensions__stepper.dimensions__stepper--down {\n      bottom: 0; }\n\n.dimensions__switch {\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  justify-content: center; }\n  .dimensions__switch .switch__label {\n    font-size: 1.4em;\n    flex: 1; }\n    .dimensions__switch .switch__label:first-child {\n      text-align: right; }\n\n.switch {\n  position: relative;\n  display: inline-block;\n  width: 72px;\n  height: 28px;\n  margin: 0 16px; }\n  .switch.checked .switch__slider:before {\n    right: 2px;\n    left: auto; }\n  .switch .switch__slider {\n    position: absolute;\n    cursor: pointer;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    left: 0;\n    border-radius: 16px;\n    background-color: #bdbdbd; }\n    .switch .switch__slider:before {\n      position: absolute;\n      content: '';\n      height: 24px;\n      width: 24px;\n      top: 2px;\n      left: 2px;\n      bottom: 2px;\n      border-radius: 50%;\n      background-color: #424242; }\n\n.planner {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n  .planner canvas {\n    flex: 1; }\n\n.modelgenerator {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n\n.generator__progress {\n  width: 100%;\n  display: flex;\n  flex-flow: row nowrap;\n  align-items: center;\n  padding: 32px 64px; }\n  .generator__progress .progress__section {\n    border-radius: 50%;\n    background-color: #9e9e9e;\n    width: 24px;\n    height: 24px;\n    text-align: center;\n    line-height: 24px;\n    color: #424242;\n    display: inline-block;\n    position: relative; }\n    .generator__progress .progress__section.complete {\n      background-color: #42bd41;\n      color: #f5f5f5; }\n    .generator__progress .progress__section--state {\n      position: absolute;\n      top: 24px;\n      left: -108px;\n      width: 240px;\n      text-align: center;\n      color: #424242;\n      font-size: 14px;\n      white-space: nowrap; }\n  .generator__progress .progress__bar {\n    height: 6px;\n    background-color: #9e9e9e;\n    flex: 1;\n    display: inline-block; }\n    .generator__progress .progress__bar.complete {\n      background-color: #42bd41; }\n\n.generator__status p {\n  font-weight: bold;\n  font-size: 1.8em;\n  padding: 16px 32px; }\n\n.generator__items {\n  flex: 1;\n  overflow-y: scroll;\n  display: flex;\n  flex-flow: row wrap;\n  align-items: center;\n  justify-content: space-between; }\n  .generator__items .generator__item {\n    flex-basis: calc(20% - 64px);\n    overflow: hidden;\n    height: 128px;\n    margin: 32px;\n    position: relative; }\n  .generator__items .generator__filename {\n    position: absolute;\n    display: inline-block;\n    left: 0;\n    right: 0;\n    top: 0;\n    height: 24px;\n    line-height: 24px;\n    text-align: right;\n    padding-right: 16px;\n    background-color: rgba(255, 255, 255, 0.8); }\n  .generator__items .generator__percentage {\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    right: 0;\n    height: 10px;\n    background-color: #9e9e9e; }\n    .generator__items .generator__percentage--progress {\n      position: absolute;\n      left: 0;\n      bottom: 0;\n      height: 10px;\n      background-color: #42bd41; }\n\n.modelviewer {\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch;\n  flex: 1;\n  cursor: move; }\n\n.viewerbar {\n  background-color: #424242;\n  height: 48px;\n  padding-left: 12px; }\n\n.viewerbar__button {\n  -webkit-appearance: none;\n  border: 0;\n  background-color: transparent;\n  text-align: center;\n  height: 100%;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  padding: 0 12px;\n  cursor: pointer;\n  transition: 0.1s background-color; }\n  .viewerbar__button:hover {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .viewerbar__button:focus {\n    outline: none; }\n\n.viewercanvas {\n  flex: 1;\n  display: flex;\n  flex-flow: column nowrap;\n  align-items: stretch; }\n  .viewercanvas canvas {\n    flex: 1; }\n\n.viewer__details {\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  display: inline-block;\n  padding: 16px;\n  color: #FFFFFF;\n  width: 240px;\n  font-size: 16px;\n  background-color: rgba(0, 0, 0, 0.2); }\n  .viewer__details h3 {\n    padding-bottom: 16px; }\n  .viewer__details p {\n    position: relative;\n    font-family: monospace; }\n  .viewer__details span {\n    position: absolute;\n    right: 0;\n    top: 0;\n    bottom: 0; }\n", ""]);
 
 // exports
 

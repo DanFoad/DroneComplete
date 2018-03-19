@@ -41,3 +41,30 @@
         flex: 1;
     }
 }
+.viewer__details {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: inline-block;
+    padding: 16px;
+    color: #FFFFFF;
+    width: 240px;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0.2);
+
+    h3 {
+        padding-bottom: 16px;
+    }
+
+    p {
+        position: relative;
+        font-family: monospace;
+    }
+
+    span {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+}

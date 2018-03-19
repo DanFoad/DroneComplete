@@ -34,6 +34,11 @@ export default class ModelViewer extends Component {
                 x: 0,
                 y: 0,
                 z: 0,
+            },
+            details: {
+                vertices: 0,
+                faces: 0,
+                materials: 0,
             }
         }
 
@@ -50,13 +55,16 @@ export default class ModelViewer extends Component {
         this.renderer.setClearColor(0xFFFFFF)
         this.canvas.appendChild(this.renderer.domElement)
 
-        /*
+        
         var mtlLoader = new MTLLoader();
         mtlLoader.setPath('src/odm_texturing/')
         mtlLoader.load('odm_textured_model.mtl', (materials) => {
             materials.preload()
+            var materialCount = Object.keys(materials.materials).length
+            this.setState({ details: {...this.state.details, materials: materialCount } })
 
-            var objLoader = new THREE.OBJLoader()
+        })
+        /*   var objLoader = new THREE.OBJLoader()
             objLoader.setMaterials(materials)
             objLoader.setPath('src/odm_texturing/')
             objLoader.load('odm_textured_model.obj', (obj) => {
@@ -79,10 +87,11 @@ export default class ModelViewer extends Component {
 
         var loader = new THREE.OBJLoader()
         loader.load('src/img/odm_textured_model.obj', (obj) => {
-            console.log(obj)
             this.model = obj
             this.model.traverse((child) => {
                 if (child instanceof THREE.Mesh) {
+                    var geo = new THREE.Geometry().fromBufferGeometry(child.geometry)
+                    this.setState({ details: { ...this.state.details, vertices: geo.vertices.length, faces: geo.faces.length } })
                     child.material = new THREE.MeshNormalMaterial()
                 }
             })
@@ -208,6 +217,12 @@ export default class ModelViewer extends Component {
             <div className='modelviewer'>
                 <ViewerBar callback={ this.setFace }/>
                 <div ref={canvas => this.canvas = canvas} className='viewercanvas'></div>
+                <div className='viewer__details'>
+                    <h3>Information</h3>
+                    <p>Material Count<span>{ this.state.details.materials }</span></p>
+                    <p>Vertex Count<span>{ this.state.details.vertices }</span></p>
+                    <p>Face Count<span>{ this.state.details.faces }</span></p>
+                </div>
             </div>
         )
     }

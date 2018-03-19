@@ -12,7 +12,8 @@ export default class ModelGenerator extends Component {
         super(props)
 
         this.state = {
-            status: 'STATUS_LOAD',
+            status: 'STATUS_FOCAL',
+            statusIndex: 2,
             images: []
         }
 
@@ -20,19 +21,46 @@ export default class ModelGenerator extends Component {
     }
 
     loadImages() {
+        var i = 0
         fs.readdir('./app/src/img/thumbs', (err, files) => {
             files.forEach(file => {
-                this.setState({ images: [ ...this.state.images, file ] })
+                var image = { path: file, percentage: 0 }
+                if (i < 12)
+                    image.percentage = 100
+                else if (i == 12)
+                    image.percentage = 50
+                
+                i++
+                
+                this.setState({ images: [ ...this.state.images, image ] })
             })
-            this.setState({ status: 'STATUS_LOADED' })
         })
     }
 
     getGeneratorStatus() {
-        if (this.state.status == 'STATUS_LOAD') {
-            return (<p>Loading images...</p>)
-        } else {
-            return (<p>Images loaded</p>)
+        switch (this.state.status) {
+            case 'STATUS_LOAD':
+                return (<p>Loading images from path...</p>)
+            case 'STATUS_RESIZE':
+                return (<p>Resizing images for usage...</p>)
+            case 'STATUS_FOCAL':
+                return (<p>Extracting focal lengths for images...</p>)
+            case 'STATUS_HAHOG':
+                return (<p>Generating HAHOG (feature point detection) features...</p>)
+            case 'STATUS_MATCH':
+                return (<p>Matching image pairs...</p>)
+            case 'STATUS_MERGE':
+                return (<p>Merging the features of connected pairs...</p>)
+            case 'STATUS_RECONSTRUCT':
+                return (<p>Reconstructing the scene from connected imagery...</p>)
+            case 'STATUS_MESHING':
+                return (<p>Generating object mesh from scene...</p>)
+            case 'STATUS_COMPDEPTH':
+                return (<p>Computing depthmaps of mesh...</p>)
+            case 'STATUS_CLEANDEPTH':
+                return (<p>Cleaning up depthmaps of mesh...</p>)
+            case 'STATUS_DONE':
+                return (<p>Process Complete</p>)
         }
     }
 
@@ -40,7 +68,7 @@ export default class ModelGenerator extends Component {
         return (
             <div className='modelgenerator'>
                 <div className='generator__status'>
-                    <GeneratorProgress status={ this.state.status } />
+                    <GeneratorProgress status={ this.state.statusIndex } />
                     { this.getGeneratorStatus() }
                 </div>
                 <GeneratorView images={ this.state.images } />

@@ -27,9 +27,11 @@ export default class GeneratorView extends Component {
         for (var i = 0; i < this.state.images.length; i++) {
             items.push(
                 <div className='generator__item' key={i}>
-                    <p className='generator__filename'>{ this.state.images[i].replace('_thumb.jpeg', '.jpeg') }</p>
-                    <img src={ './src/img/thumbs/' + this.state.images[i] } />
-                    <div className='generator__progress'></div>
+                    <p className='generator__filename'>{ this.state.images[i].path.replace('_thumb.jpeg', '.jpeg') }</p>
+                    <img src={ './src/img/thumbs/' + this.state.images[i].path } />
+                    <div className='generator__percentage'>
+                        <div className='generator__percentage--progress' style={{ width: this.state.images[i].percentage + '%' }}></div>
+                    </div>
                 </div>
             )
         }
